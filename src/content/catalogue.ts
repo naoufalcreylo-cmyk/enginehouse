@@ -1,4 +1,5 @@
 import type { FigureKey } from "@/components/figures";
+import type { MediaSlotKey } from "@/content/media";
 
 export type Category = {
   slug: string;
@@ -17,6 +18,7 @@ export type Category = {
   stockNote?: string;
   relatedService: string;
   figure: FigureKey;
+  photo: MediaSlotKey;
   seo: { title: string; description: string };
 };
 
@@ -38,6 +40,7 @@ export const categories: Category[] = [
     stockNote: "Notre stock de moteurs se compose principalement de moteurs Caterpillar et Cummins.",
     relatedService: "reconditionnement-organes-majeurs",
     figure: "engine",
+    photo: "cat-moteurs",
     seo: {
       title: "Moteurs thermiques diesel pour engins — neufs, occasion, reconditionnés",
       description:
@@ -61,6 +64,7 @@ export const categories: Category[] = [
     stockNote: "Notre stock de pompes hydrauliques couvre l’ensemble de la gamme des machines.",
     relatedService: "reconditionnement-organes-majeurs",
     figure: "pump",
+    photo: "cat-hydraulique",
     seo: {
       title: "Pompes et moteurs hydrauliques pour engins de chantier",
       description:
@@ -79,6 +83,7 @@ export const categories: Category[] = [
     covers: ["Boîtes de vitesses", "Boîtes de transfert", "Organes de transmission"],
     relatedService: "reconditionnement-organes-majeurs",
     figure: "gearbox",
+    photo: "cat-transmissions",
     seo: {
       title: "Boîtes de vitesses et transmissions pour engins lourds",
       description:
@@ -97,6 +102,7 @@ export const categories: Category[] = [
     covers: ["Réducteurs de translation", "Réducteurs d’orientation", "Sous-ensembles de réducteurs"],
     relatedService: "reconditionnement-organes-majeurs",
     figure: "reducer",
+    photo: "cat-reducteurs",
     seo: {
       title: "Réducteurs pour engins de chantier, mines et carrières",
       description:
@@ -119,6 +125,7 @@ export const categories: Category[] = [
     },
     relatedService: "injecteurs-et-pompes-haute-pression",
     figure: "injector",
+    photo: "cat-injection",
     seo: {
       title: "Injecteurs diesel et pompes haute pression pour engins",
       description:
@@ -142,6 +149,7 @@ export const categories: Category[] = [
     stockNote: "Nous disposons d’un stock important de pièces neuves et d’occasion.",
     relatedService: "pieces-de-rechange-et-composants",
     figure: "parts",
+    photo: "cat-pieces",
     seo: {
       title: "Pièces de rechange pour engins Caterpillar, Volvo, Komatsu, Doosan",
       description:

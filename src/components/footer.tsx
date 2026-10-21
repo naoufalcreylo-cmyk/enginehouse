@@ -5,10 +5,13 @@ import { site } from "@/config/site";
 import { categories } from "@/content/catalogue";
 import { services } from "@/content/services";
 import { quoteHref } from "@/lib/quote";
-import logo from "../../public/brand/engine-house-logo.png";
+import logoNegatif from "../../public/brand/engine-house-logo-negatif.png";
 
 const companyLinks = [
+  { href: "/", label: "Accueil" },
   { href: "/a-propos", label: "À propos" },
+  { href: "/nos-metiers", label: "Tous nos métiers" },
+  { href: "/catalogue", label: "Tout le catalogue" },
   { href: "/nos-moyens", label: "Nos moyens" },
   { href: "/garanties-et-livraison", label: "Garanties et livraison" },
   { href: "/contact", label: "Contact" },
@@ -38,9 +41,9 @@ export function SiteFooter() {
       <div aria-hidden="true" className="h-1.5 bg-[repeating-linear-gradient(135deg,var(--color-signal)_0_14px,var(--color-ink)_14px_28px)]" />
       <div className="container-eh grid gap-12 py-16 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          {/* Le logo fourni a un fond blanc : il est présenté sur une plaque claire. */}
-          <Link href="/" className="inline-block bg-white p-4" aria-label="Engine House Import Export — accueil">
-            <Image src={logo} alt="" className="h-14 w-auto" sizes="130px" />
+          {/* Version négative du logo (fond transparent, noir passé en blanc, jaune d’origine conservé). */}
+          <Link href="/" className="inline-block" aria-label="Engine House Import Export — accueil">
+            <Image src={logoNegatif} alt="" className="h-16 w-auto" sizes="140px" />
           </Link>
           <p className="mt-6 max-w-sm text-[0.95rem] text-steel-300">
             Maintenance d’engins, reconditionnement d’organes majeurs et fourniture de composants pour le BTP, le
@@ -68,9 +71,18 @@ export function SiteFooter() {
             © {site.legalName}. Les marques citées appartiennent à leurs propriétaires respectifs et servent uniquement à
             identifier les engins sur lesquels nous intervenons.
           </p>
-          <Link href="/politique-de-confidentialite" className="shrink-0 hover:text-bone">
-            Politique de confidentialité
-          </Link>
+          <ul className="flex shrink-0 flex-wrap gap-x-5 gap-y-1">
+            <li>
+              <Link href="/politique-de-confidentialite" className="hover:text-bone">
+                Politique de confidentialité
+              </Link>
+            </li>
+            <li>
+              <Link href="/credits-photos" className="hover:text-bone">
+                Crédits photos
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
     </footer>

@@ -66,7 +66,11 @@ Pour utiliser un autre fournisseur (SMTP, Brevo, etc.), il suffit de remplacer `
 
 **Règle d’affichage :** une coordonnée (e-mail, WhatsApp, lien carte, horaires, réseaux) n’apparaît sur le site que si elle est renseignée dans `site.ts`.
 
-**Photos :** chaque emplacement affiche une planche technique illustrée tant qu’aucune photo n’est fournie. Pour publier une photo, déposer le fichier dans `public/photos/`, puis compléter `src`, `alt`, `width` et `height` dans `media.ts`. Pour une photo de banque d’images, ajouter `isIllustrative: true` : la mention « Photo d’illustration » s’affiche alors, pour ne pas la présenter comme les locaux d’Engine House.
+**Photos :** 15 photos d’illustration sous licence libre (Wikimedia Commons, CC0 / CC BY / CC BY-SA / domaine public) sont en place dans `public/photos/`. Elles portent la mention « Photo d’illustration » et leurs auteurs et licences sont publiés sur `/credits-photos`, ce qu’exigent les licences CC BY et CC BY-SA. Pour remplacer une photo par une photo authentique d’Engine House : déposer le fichier dans `public/photos/`, mettre à jour `src`, `alt`, `width` et `height` dans `media.ts`, et retirer `credit` et `isIllustrative`. Une entrée à `null` réaffiche la planche technique dessinée.
+
+**Logos de marques :** `public/marques/` contient les logos Caterpillar et Volvo (Simple Icons, CC0) et Komatsu, Doosan, Liebherr et Cummins (Wikimedia Commons, domaine public au titre du droit d’auteur). Ce sont des marques déposées : ils sont affichés en niveaux de gris, avec une mention précisant qu’ils servent à identifier les engins et n’impliquent aucun partenariat. Faire valider leur usage si Engine House a des accords particuliers avec ces marques.
+
+**Logo sur fond sombre :** `public/brand/engine-house-logo-negatif.png`, généré à partir du logo fourni (fond transparent, noir passé en blanc, jaune #FDB916 conservé). Une version vectorielle officielle reste préférable.
 
 **Produits :** n’ajouter que des articles réellement disponibles (voir le modèle commenté dans `products.ts`). Chaque fiche publiée crée sa page `/catalogue/produit/<slug>`, s’ajoute au sitemap et active la recherche et les filtres. Les filtres n’apparaissent que si les données les justifient. Les données structurées `Product` ne sont générées que pour une fiche complète (référence, marque, image, description), sans prix. Ne renseigner `compatibility` qu’avec des compatibilités confirmées.
 

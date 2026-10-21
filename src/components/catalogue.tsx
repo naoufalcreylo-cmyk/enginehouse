@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useId, useMemo, useState } from "react";
-import { Figure } from "@/components/figures";
+import { CardImage } from "@/components/ui";
 import { ArrowRight, SearchIcon } from "@/components/icons";
 import { categories } from "@/content/catalogue";
 import type { Product } from "@/content/products";
@@ -189,9 +189,7 @@ export function ProductCard({ product }: { product: Product }) {
         {image ? (
           <Image src={image.src} alt={image.alt} fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />
         ) : (
-          <span className="tech-grid-light flex h-full items-center justify-center p-8 text-steel-500">
-            {cat && <Figure name={cat.figure} className="h-full w-auto" />}
-          </span>
+          cat && <CardImage slot={cat.photo} figure={cat.figure} className="h-full" />
         )}
         <span className="absolute left-3 top-3 bg-ink px-2 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-signal">
           {conditionLabel(product.condition)}

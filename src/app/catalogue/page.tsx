@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { ProductExplorer } from "@/components/catalogue";
-import { Figure } from "@/components/figures";
 import { ArrowRight } from "@/components/icons";
-import { CtaBand, PageHero, SectionLabel } from "@/components/ui";
+import { CardImage, CtaBand, PageHero, SectionLabel } from "@/components/ui";
 import { categories } from "@/content/catalogue";
 import { delivery } from "@/content/company";
 import { products } from "@/content/products";
@@ -45,9 +44,7 @@ export default function CataloguePage() {
                     {c.code}
                     <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                   </span>
-                  <span className={`my-6 flex flex-1 items-center ${i === 0 ? "text-steel-400" : "text-steel-500 group-hover:text-ink"}`}>
-                    <Figure name={c.figure} className={i === 0 ? "w-full" : "h-28 w-auto"} />
-                  </span>
+                  <CardImage slot={c.photo} figure={c.figure} tone={i === 0 ? "dark" : "light"} className={`my-6 ${i === 0 ? "min-h-64 flex-1" : "aspect-[16/9]"}`} />
                   <span className="font-display text-2xl font-extrabold leading-tight">{c.title}</span>
                   <span className={`mt-2 text-[0.96rem] ${i === 0 ? "text-steel-300" : "text-steel-700"}`}>{c.summary}</span>
                 </Link>

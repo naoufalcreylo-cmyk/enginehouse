@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { Figure } from "@/components/figures";
 import { ArrowRight } from "@/components/icons";
-import { CtaBand, PageHero, SectionLabel } from "@/components/ui";
+import { CardImage, CtaBand, PageHero, SectionLabel } from "@/components/ui";
 import { MACHINES, services } from "@/content/services";
 import { quoteHref } from "@/lib/quote";
 import { pageMetadata } from "@/lib/seo";
@@ -37,9 +36,7 @@ export default function ServicesIndexPage() {
                     <span className="block text-3xl font-extrabold leading-tight sm:text-4xl font-display">{s.title}</span>
                     <span className="mt-3 block max-w-xl text-steel-700">{s.summary}</span>
                   </span>
-                  <span className="hidden text-steel-400 transition-colors group-hover:text-ink lg:col-span-3 lg:block">
-                    <Figure name={s.figure} className="h-28 w-auto" />
-                  </span>
+                  <CardImage slot={s.photo} figure={s.figure} className="aspect-[16/9] lg:col-span-3" sizes="(min-width: 1024px) 22vw, 100vw" />
                   <span className="flex items-center gap-3 font-semibold lg:col-span-2 lg:justify-end">
                     Découvrir
                     <span className="flex size-11 items-center justify-center border-2 border-ink transition-colors group-hover:border-signal group-hover:bg-signal">

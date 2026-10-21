@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { Figure } from "@/components/figures";
 import { ArrowRight } from "@/components/icons";
-import { ButtonLink, ContactDetails, MediaSlot, Nameplate, SectionLabel, TextLink } from "@/components/ui";
+import { BrandStrip, ButtonLink, CardImage, ContactDetails, MediaSlot, Nameplate, SectionLabel, TextLink } from "@/components/ui";
 import { site } from "@/config/site";
 import { categories } from "@/content/catalogue";
 import { approach, facilities, sectors } from "@/content/company";
-import { BRANDS, MACHINES, services } from "@/content/services";
+import { MACHINES, services } from "@/content/services";
 import { quoteHref } from "@/lib/quote";
 import { pageMetadata } from "@/lib/seo";
 
@@ -101,19 +100,9 @@ export default function HomePage() {
             ))}
           </ol>
 
-          <div className="border-t border-steel-200 pt-10 lg:col-span-12">
-            <div className="grid gap-8 lg:grid-cols-12">
-              <p className="font-mono text-xs uppercase tracking-[0.16em] text-steel-600 lg:col-span-3">
-                Intervention sur engins de marques
-              </p>
-              <ul className="flex flex-wrap gap-x-8 gap-y-3 lg:col-span-9">
-                {BRANDS.map((b) => (
-                  <li key={b} className="font-display text-2xl font-extrabold uppercase tracking-tight text-ink sm:text-3xl [font-stretch:118%]">
-                    {b}
-                  </li>
-                ))}
-                <li className="self-end pb-1 text-steel-600">et autres marques</li>
-              </ul>
+          <div className="space-y-10 border-t border-steel-200 pt-10 lg:col-span-12">
+            <BrandStrip />
+            <div className="grid gap-4 lg:grid-cols-12">
               <p className="font-mono text-xs uppercase tracking-[0.16em] text-steel-600 lg:col-span-3">Types d’engins</p>
               <ul className="flex flex-wrap gap-2 lg:col-span-9">
                 {MACHINES.map((m) => (
@@ -160,9 +149,7 @@ export default function HomePage() {
               <span className="font-mono text-xs tracking-[0.16em] text-signal">{featured.code}</span>
               <h3 className="mt-4 text-3xl font-extrabold sm:text-4xl">{featured.title}</h3>
               <p className="mt-4 max-w-md text-steel-300">{featured.summary}</p>
-              <div className="my-8 flex flex-1 items-center text-steel-400">
-                <Figure name={featured.figure} className="mx-auto h-auto w-full max-w-md" />
-              </div>
+              <CardImage slot={featured.photo} figure={featured.figure} tone="dark" className="my-8 min-h-56 flex-1" sizes="(min-width: 1024px) 45vw, 100vw" />
               <span className="inline-flex items-center gap-2 font-semibold text-signal">
                 Découvrir le diagnostic sur site
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
@@ -257,10 +244,8 @@ export default function HomePage() {
                       <span>{c.code}</span>
                       <span aria-hidden="true" className="size-2 rounded-full border border-steel-400 group-hover:border-signal group-hover:bg-signal" />
                     </span>
-                    <span className="px-5 pt-5 text-steel-500 transition-colors group-hover:text-ink">
-                      <Figure name={c.figure} className="h-24 w-auto" />
-                    </span>
-                    <span className="flex flex-1 flex-col px-5 pb-5 pt-3">
+                    <CardImage slot={c.photo} figure={c.figure} className="aspect-[16/9]" sizes="(min-width: 1024px) 28vw, (min-width: 640px) 50vw, 100vw" />
+                    <span className="flex flex-1 flex-col px-5 pb-5 pt-4">
                       <span className="font-display text-xl font-extrabold leading-tight">{c.title}</span>
                       <span className="mt-1.5 text-sm text-steel-700">{c.summary}</span>
                     </span>

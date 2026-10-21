@@ -17,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/contact",
     "/garanties-et-livraison",
     "/politique-de-confidentialite",
+    "/credits-photos",
   ];
   return paths.map((path) => ({
     url: absoluteUrl(path),

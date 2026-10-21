@@ -113,21 +113,23 @@ export function MediaSlot({
 
   if (photo) {
     return (
-      <figure className={`relative overflow-hidden bg-graphite ${className}`}>
+      <figure className={`crop-marks relative overflow-hidden bg-graphite ${className}`}>
         <Image
           src={photo.src}
           alt={photo.alt}
-          width={photo.width}
-          height={photo.height}
+          fill
           sizes={sizes}
           priority={priority}
-          className="h-full w-full object-cover"
+          className="object-cover"
+          style={photo.position ? { objectPosition: photo.position } : undefined}
         />
-        {photo.isIllustrative && (
-          <figcaption className="absolute bottom-2 right-2 bg-ink/80 px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-bone">
-            Photo d’illustration
-          </figcaption>
-        )}
+        <figcaption className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-4 bg-gradient-to-t from-ink/85 to-transparent px-4 pb-2.5 pt-8 font-mono text-[10px] uppercase tracking-[0.16em] text-bone">
+          <span>
+            {figureNumber && <span className="text-signal">{figureNumber} — </span>}
+            {label}
+          </span>
+          {photo.isIllustrative && <span className="shrink-0 text-steel-300">Photo d’illustration</span>}
+        </figcaption>
       </figure>
     );
   }
@@ -154,6 +156,79 @@ export function MediaSlot({
         <span aria-hidden="true">Schéma</span>
       </figcaption>
     </figure>
+  );
+}
+
+/** Vignette de carte : photo si disponible, sinon planche technique. */
+export function CardImage({
+  slot,
+  figure,
+  className = "",
+  sizes = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
+  tone = "light",
+}: {
+  slot: MediaSlotKey;
+  figure: FigureKey;
+  className?: string;
+  sizes?: string;
+  tone?: "light" | "dark";
+}) {
+  const photo = media[slot];
+  return (
+    <span className={`relative block overflow-hidden ${tone === "dark" ? "bg-coal" : "bg-paper"} ${className}`}>
+      {photo ? (
+        <Image
+          src={photo.src}
+          alt={photo.alt}
+          fill
+          sizes={sizes}
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          style={photo.position ? { objectPosition: photo.position } : undefined}
+        />
+      ) : (
+        <span className={`flex h-full items-center justify-center p-6 ${tone === "dark" ? "tech-grid text-steel-400" : "tech-grid-light text-steel-500"}`}>
+          <Figure name={figure} className="h-full w-auto" />
+        </span>
+      )}
+    </span>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Bandeau des marques                                                         */
+/* -------------------------------------------------------------------------- */
+
+const brandLogos = [
+  { name: "Caterpillar", src: "/marques/caterpillar.svg", h: "h-10" },
+  { name: "Volvo", src: "/marques/volvo.svg", h: "h-11" },
+  { name: "Komatsu", src: "/marques/komatsu.svg", h: "h-5" },
+  { name: "Doosan", src: "/marques/doosan.svg", h: "h-5" },
+  { name: "Liebherr", src: "/marques/liebherr.svg", h: "h-5" },
+  { name: "Cummins", src: "/marques/cummins.svg", h: "h-10" },
+];
+
+export function BrandStrip({ title = "Intervention sur engins et moteurs de marques" }: { title?: string }) {
+  return (
+    <div>
+      <p className="font-mono text-xs uppercase tracking-[0.16em] text-steel-600">{title}</p>
+      <ul className="mt-5 grid grid-cols-2 gap-px border border-steel-200 bg-steel-200 sm:grid-cols-3 lg:grid-cols-6">
+        {brandLogos.map((b) => (
+          <li key={b.name} className="group flex h-24 items-center justify-center bg-white px-5">
+            {/* eslint-disable-next-line @next/next/no-img-element -- logos SVG vectoriels, sans optimisation nécessaire */}
+            <img
+              src={b.src}
+              alt={b.name}
+              className={`${b.h} w-auto max-w-full opacity-75 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0`}
+              loading="lazy"
+            />
+          </li>
+        ))}
+      </ul>
+      <p className="mt-3 text-xs text-steel-600">
+        Marques et logos cités à titre d’identification des engins et moteurs sur lesquels nous intervenons. Ils
+        appartiennent à leurs propriétaires respectifs ; leur mention n’implique aucun partenariat ni agrément.
+      </p>
+    </div>
   );
 }
 

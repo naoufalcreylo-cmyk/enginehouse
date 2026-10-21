@@ -39,7 +39,7 @@ export default async function CategoryPage({ params }: PageProps<"/catalogue/[ca
         label={`${category.code} · Catalogue sur cotation`}
         title={category.title}
         intro={category.summary}
-        aside={<MediaSlot slot="pieces" figure={category.figure} tone="dark" figureNumber={category.code} className="aspect-[4/3]" />}
+        aside={<MediaSlot slot={category.photo} figure={category.figure} tone="dark" figureNumber={category.code} className="aspect-[4/3]" />}
       />
 
       <section className="bg-bone">
