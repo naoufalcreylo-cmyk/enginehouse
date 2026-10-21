@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+/*
+ * Engine House — design tokens
+ * Jaune échantillonné sur le logo fourni : #FDB916.
+ * Le jaune n'est jamais utilisé comme couleur de texte sur fond clair
+ * (contraste insuffisant) : uniquement en fond, marqueur ou texte sur fond sombre.
+ */
+@theme {
+  --color-signal: #fdb916;
+  --color-signal-deep: #e9a400;
+  --color-ink: #0b0b0b;
+  --color-coal: #151515;
+  --color-graphite: #232323;
+  --color-steel-700: #3d3d3b;
+  --color-steel-600: #555553;
+  --color-steel-500: #686865;
+  --color-steel-400: #a3a39f;
+  --color-steel-300: #c4c3be;
+  --color-steel-200: #dddcd6;
+  --color-steel-100: #ebeae5;
+  --color-paper: #f3f2ed;
+  --color-bone: #fafaf7;
+
+  --font-display: var(--font-archivo), "Arial Narrow", Arial, sans-serif;
+  --font-sans: var(--font-plex-sans), "Segoe UI", Arial, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, Consolas, monospace;
+
+  --breakpoint-xs: 26rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-bone);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-stretch: 108%;
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    hyphens: manual;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--color-signal);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-signal);
+    outline-offset: 3px;
+  }
+
+  /* Sur fond clair, le contour jaune seul manque de contraste : on le double d'un liseré noir. */
+  .on-light :focus-visible,
+  .on-light:focus-visible {
+    outline-color: var(--color-ink);
+    box-shadow: 0 0 0 6px var(--color-signal);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-eh {
+    width: 100%;
+    max-width: 82rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+
+  @media (min-width: 40rem) {
+    .container-eh {
+      padding-inline: 1.5rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .container-eh {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  /* Trame de dessin technique, pour les sections sombres */
+  .tech-grid {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .tech-grid-light {
+    background-image:
+      linear-gradient(to right, rgb(11 11 11 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(11 11 11 / 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Repères d'angle façon planche technique */
+  .crop-marks {
+    position: relative;
+  }
+
+  .crop-marks::before,
+  .crop-marks::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+    border-color: var(--color-signal);
+  }
+
+  .crop-marks::before {
+    top: -1px;
+    left: -1px;
+    border-top: 2px solid;
+    border-left: 2px solid;
+  }
+
+  .crop-marks::after {
+    right: -1px;
+    bottom: -1px;
+    border-right: 2px solid;
+    border-bottom: 2px solid;
+  }
+
+  .prose-eh p + p {
+    margin-top: 1.1em;
+  }
+
+  .hyphenate {
+    hyphens: auto;
+  }
+}
