@@ -14,21 +14,31 @@ export function SectionLabel({
   index,
   children,
   tone = "light",
+  ghost = true,
 }: {
   index?: string;
   children: ReactNode;
   tone?: "light" | "dark";
+  /** Reprise décorative du libellé en grand, en contour, derrière le titre */
+  ghost?: boolean;
 }) {
   return (
-    <p
-      className={`flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.18em] ${
-        tone === "dark" ? "text-steel-300" : "text-steel-600"
-      }`}
-    >
-      <span aria-hidden="true" className="inline-block size-2.5 bg-signal" />
-      {index && <span className={tone === "dark" ? "text-signal" : "text-ink"}>{index}</span>}
-      <span>{children}</span>
-    </p>
+    <div className="eh-label">
+      {ghost && (
+        <span aria-hidden="true" className="eh-ghost" data-tone={tone}>
+          {children}
+        </span>
+      )}
+      <p
+        className={`flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.18em] ${
+          tone === "dark" ? "text-steel-300" : "text-steel-600"
+        }`}
+      >
+        <span aria-hidden="true" className="inline-block size-2.5 bg-signal" />
+        {index && <span className={tone === "dark" ? "text-signal" : "text-ink"}>{index}</span>}
+        <span>{children}</span>
+      </p>
+    </div>
   );
 }
 
@@ -39,10 +49,10 @@ export function SectionLabel({
 type ButtonVariant = "primary" | "dark" | "outline" | "outline-light";
 
 const buttonStyles: Record<ButtonVariant, string> = {
-  primary: "bg-signal text-ink hover:bg-ink hover:text-signal border-signal hover:border-ink",
-  dark: "bg-ink text-bone hover:bg-signal hover:text-ink border-ink hover:border-signal",
-  outline: "border-ink text-ink hover:bg-ink hover:text-bone on-light",
-  "outline-light": "border-bone/40 text-bone hover:border-signal hover:text-signal",
+  primary: "btn-primary",
+  dark: "btn-dark",
+  outline: "btn-outline on-light",
+  "outline-light": "btn-outline-light",
 };
 
 export function ButtonLink({
@@ -61,10 +71,10 @@ export function ButtonLink({
   return (
     <Link
       href={href}
-      className={`group inline-flex min-h-12 items-center justify-center gap-3 border-2 px-5 py-3 text-[0.95rem] font-semibold transition-colors duration-200 ${buttonStyles[variant]} ${className}`}
+      className={`btn-eh inline-flex min-h-12 items-center justify-center gap-3 border-2 px-6 py-3 ${buttonStyles[variant]} ${className}`}
     >
       <span>{children}</span>
-      {arrow && <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />}
+      {arrow && <ArrowRight className="btn-arrow size-4" />}
     </Link>
   );
 }
@@ -113,14 +123,16 @@ export function MediaSlot({
 
   if (photo) {
     return (
-      <figure className={`crop-marks relative overflow-hidden bg-graphite ${className}`}>
+      <figure
+        className={`relative overflow-hidden bg-graphite ${tone === "dark" ? "media-offset-dark" : "media-offset-light"} ${className}`}
+      >
         <Image
           src={photo.src}
           alt={photo.alt}
           fill
           sizes={sizes}
           priority={priority}
-          className="object-cover"
+          className="media-img object-cover"
           style={photo.position ? { objectPosition: photo.position } : undefined}
         />
         <figcaption className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-4 bg-gradient-to-t from-ink/85 to-transparent px-4 pb-2.5 pt-8 font-mono text-[10px] uppercase tracking-[0.16em] text-bone">

@@ -500,7 +500,7 @@ export function QuoteForm({ initial = {} }: { initial?: Partial<QuoteFields> }) 
         type="submit"
         disabled={status.state === "sending"}
         aria-disabled={status.state === "sending"}
-        className="group inline-flex min-h-13 w-full items-center justify-center gap-3 border-2 border-ink bg-ink px-6 py-3.5 text-base font-semibold text-bone transition-colors hover:border-signal hover:bg-signal hover:text-ink disabled:cursor-wait disabled:opacity-70 sm:w-auto"
+        className="btn-eh btn-dark inline-flex min-h-13 w-full items-center justify-center gap-3 border-2 px-7 py-3.5 disabled:cursor-wait disabled:opacity-70 sm:w-auto"
       >
         {status.state === "sending" ? (
           <>
@@ -510,7 +510,7 @@ export function QuoteForm({ initial = {} }: { initial?: Partial<QuoteFields> }) 
         ) : (
           <>
             Envoyer la demande
-            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="btn-arrow size-4" />
           </>
         )}
       </button>

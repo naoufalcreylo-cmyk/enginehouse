@@ -91,10 +91,10 @@ export function ProductExplorer({ products, category }: { products: Product[]; c
         {!hasInventory && (
           <Link
             href={requestHref}
-            className="group inline-flex min-h-[3.25rem] items-center justify-center gap-3 border-2 border-ink bg-ink px-5 font-semibold text-bone transition-colors hover:border-signal hover:bg-signal hover:text-ink lg:col-span-4"
+            className="btn-eh btn-dark inline-flex min-h-[3.25rem] items-center justify-center gap-3 border-2 px-5 lg:col-span-4"
           >
             {query.trim() ? "Demander cette référence" : "Demander une cotation"}
-            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="btn-arrow size-4" />
           </Link>
         )}
       </form>
@@ -183,7 +183,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/catalogue/produit/${product.slug}`}
-      className="on-light group flex h-full flex-col border border-steel-300 bg-white transition-colors hover:border-ink"
+      className="on-light card-eh group flex h-full flex-col border border-steel-300 bg-white transition-colors hover:border-ink"
     >
       <span className="relative block aspect-[4/3] overflow-hidden bg-paper">
         {image ? (

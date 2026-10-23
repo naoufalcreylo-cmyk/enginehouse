@@ -105,6 +105,8 @@ Visuels authentiques :
 
 ## Notes techniques
 
+- **Mouvement et interactions** (`src/app/globals.css`, section « Mouvement et interactions ») : boutons à remplissage balayé (`.btn-eh` + `.btn-primary`, `.btn-dark`, `.btn-outline`, `.btn-outline-light`), surlignage de navigation (`.nav-hl`), sous-menu et menu mobile animés (`.dd-panel`, `.mm-panel`), barre de survol des cartes (`.card-eh`), titres fantômes (prop `ghost` de `SectionLabel`), photos à cadre décalé et dévoilement. Les révélations au défilement sont posées automatiquement par `src/components/motion-root.tsx` sur les blocs des sections ; ajouter `data-no-reveal` sur une section pour l’exclure. Tout est désactivé avec `prefers-reduced-motion`, et les effets de survol ont un équivalent au clavier (`:focus-visible`) et au toucher (`:active`).
+
 - `src/proxy.ts` renvoie un vrai statut 404 pour les identifiants inconnus. Avec Cache Components, ces pages seraient sinon servies en streaming avec un statut 200.
 - `robots.txt` bloque l’indexation tant que `NEXT_PUBLIC_SITE_URL` n’est pas défini.
 - Polices : Archivo (titres, axe de largeur), IBM Plex Sans (texte), IBM Plex Mono (repères techniques), chargées via `next/font`.

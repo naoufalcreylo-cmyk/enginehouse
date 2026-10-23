@@ -39,7 +39,7 @@ export default function CataloguePage() {
           <ul className="mt-12 grid gap-px border border-steel-200 bg-steel-200 md:grid-cols-2 lg:grid-cols-3">
             {categories.map((c, i) => (
               <li key={c.slug} className={i === 0 ? "md:col-span-2 lg:col-span-1 lg:row-span-2" : ""}>
-                <Link href={`/catalogue/${c.slug}`} className={`on-light group flex h-full flex-col p-7 transition-colors ${i === 0 ? "bg-ink text-bone hover:bg-graphite" : "bg-white hover:bg-paper"}`}>
+                <Link href={`/catalogue/${c.slug}`} className={`on-light card-eh group flex h-full flex-col p-7 transition-colors ${i === 0 ? "bg-ink text-bone hover:bg-graphite" : "bg-white hover:bg-paper"}`}>
                   <span className={`flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.16em] ${i === 0 ? "text-signal" : "text-steel-600"}`}>
                     {c.code}
                     <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />

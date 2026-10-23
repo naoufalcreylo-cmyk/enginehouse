@@ -29,7 +29,7 @@ export default function ServicesIndexPage() {
               <li key={s.slug}>
                 <Link
                   href={`/nos-metiers/${s.slug}`}
-                  className="on-light group grid items-center gap-6 py-8 transition-colors hover:bg-paper sm:px-4 lg:grid-cols-12 lg:py-10"
+                  className="on-light card-eh group grid items-center gap-6 py-8 transition-colors hover:bg-paper sm:px-4 lg:grid-cols-12 lg:py-10"
                 >
                   <span className="font-mono text-sm tracking-[0.16em] text-steel-600 lg:col-span-1">{s.code}</span>
                   <span className="lg:col-span-6">

@@ -167,7 +167,7 @@ export default async function ServicePage({ params }: PageProps<"/nos-metiers/[s
             <ul className="mt-6 divide-y divide-steel-200 border-y border-steel-200">
               {relatedServices.map((s) => (
                 <li key={s.slug}>
-                  <Link href={`/nos-metiers/${s.slug}`} className="on-light group flex items-center justify-between gap-4 py-4">
+                  <Link href={`/nos-metiers/${s.slug}`} className="on-light card-eh group flex items-center justify-between gap-4 py-4">
                     <span>
                       <span className="mr-3 font-mono text-xs tracking-[0.14em] text-steel-600">{s.code}</span>
                       <span className="font-semibold">{s.title}</span>
@@ -184,7 +184,7 @@ export default async function ServicePage({ params }: PageProps<"/nos-metiers/[s
               <ul className="mt-6 divide-y divide-steel-200 border-y border-steel-200">
                 {relatedCategories.map((c) => (
                   <li key={c.slug}>
-                    <Link href={`/catalogue/${c.slug}`} className="on-light group flex items-center justify-between gap-4 py-4">
+                    <Link href={`/catalogue/${c.slug}`} className="on-light card-eh group flex items-center justify-between gap-4 py-4">
                       <span>
                         <span className="mr-3 font-mono text-xs tracking-[0.14em] text-steel-600">{c.code}</span>
                         <span className="font-semibold">{c.title}</span>

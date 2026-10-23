@@ -27,6 +27,11 @@
   --font-mono: var(--font-plex-mono), ui-monospace, Consolas, monospace;
 
   --breakpoint-xs: 26rem;
+
+  /* Courbes de mouvement partagées */
+  --ease-eh: cubic-bezier(0.65, 0, 0.25, 1);
+  --ease-out-eh: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-back-eh: cubic-bezier(0.34, 1.32, 0.64, 1);
 }
 
 @layer base {
@@ -162,5 +167,442 @@
 
   .hyphenate {
     hyphens: auto;
+  }
+}
+
+/* ==========================================================================
+ * Mouvement et interactions
+ * Inspiré des interactions observées sur enginehouse.ma (boutons carrés à
+ * remplissage, surlignage jaune de la navigation, sous-menu glissant,
+ * titres « fantômes », photos à bloc décalé, révélations au défilement),
+ * réinterprété avec des durées courtes et des courbes cohérentes.
+ * Tous les effets sont neutralisés par prefers-reduced-motion.
+ * ========================================================================== */
+
+@layer components {
+  /* --- Boutons : remplissage qui balaie de gauche à droite ---------------- */
+  .btn-eh {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+    border-color: var(--btn-border, var(--btn-bg));
+    transition:
+      color 0.4s var(--ease-eh),
+      border-color 0.4s var(--ease-eh),
+      transform 0.16s ease-out;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-eh::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    background: var(--btn-fill);
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 0.45s var(--ease-eh);
+  }
+
+  .btn-eh .btn-arrow {
+    transition: transform 0.45s var(--ease-eh);
+  }
+
+  @media (hover: hover) {
+    .btn-eh:hover::before {
+      transform: scaleX(1);
+      transform-origin: left center;
+    }
+
+    .btn-eh:hover {
+      color: var(--btn-fill-text);
+      border-color: var(--btn-fill-border, var(--btn-fill));
+    }
+
+    .btn-eh:hover .btn-arrow {
+      transform: translateX(5px);
+    }
+  }
+
+  /* Équivalent clavier du survol */
+  .btn-eh:focus-visible::before {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+
+  .btn-eh:focus-visible {
+    color: var(--btn-fill-text);
+    border-color: var(--btn-fill-border, var(--btn-fill));
+  }
+
+  /* Retour au clic / toucher */
+  .btn-eh:active {
+    transform: scale(0.975);
+  }
+
+  .btn-eh:active::before {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+
+  .btn-eh:disabled::before {
+    transform: scaleX(0);
+  }
+
+  .btn-primary {
+    --btn-bg: var(--color-signal);
+    --btn-text: var(--color-ink);
+    --btn-fill: var(--color-ink);
+    --btn-fill-text: var(--color-bone);
+  }
+
+  .btn-dark {
+    --btn-bg: var(--color-ink);
+    --btn-text: var(--color-bone);
+    --btn-fill: var(--color-signal);
+    --btn-fill-text: var(--color-ink);
+  }
+
+  .btn-outline {
+    --btn-bg: transparent;
+    --btn-text: var(--color-ink);
+    --btn-border: var(--color-ink);
+    --btn-fill: var(--color-ink);
+    --btn-fill-text: var(--color-bone);
+  }
+
+  .btn-outline-light {
+    --btn-bg: transparent;
+    --btn-text: var(--color-bone);
+    --btn-border: rgb(250 250 247 / 0.45);
+    --btn-fill: var(--color-signal);
+    --btn-fill-text: var(--color-ink);
+  }
+
+  /* Le remplissage doit contraster avec le fond de la section */
+  :is(.bg-ink, .bg-coal, .bg-graphite) .btn-primary {
+    --btn-fill: var(--color-bone);
+    --btn-fill-text: var(--color-ink);
+  }
+
+  .bg-signal .btn-dark {
+    --btn-fill: var(--color-bone);
+    --btn-fill-text: var(--color-ink);
+    --btn-fill-border: var(--color-ink);
+  }
+
+  /* --- Navigation : surlignage jaune sous le libellé ----------------------- */
+  .nav-hl {
+    position: relative;
+    z-index: 0;
+  }
+
+  .nav-hl::after {
+    content: "";
+    position: absolute;
+    left: -0.18em;
+    right: -0.18em;
+    bottom: 0.02em;
+    height: 0.42em;
+    z-index: -1;
+    background: var(--color-signal);
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 0.4s var(--ease-eh);
+  }
+
+  @media (hover: hover) {
+    :hover > .nav-hl::after {
+      transform: scaleX(1);
+      transform-origin: left center;
+    }
+  }
+
+  :focus-visible > .nav-hl::after,
+  .is-active > .nav-hl::after,
+  [aria-expanded="true"] > .nav-hl::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+
+  /* --- Sous-menu « Nos métiers » ------------------------------------------- */
+  .dd-panel {
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, 16px);
+    transition:
+      opacity 0.28s var(--ease-out-eh),
+      transform 0.45s var(--ease-back-eh),
+      visibility 0s linear 0.45s;
+  }
+
+  .dd-panel[data-open="true"] {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+    transition-delay: 0s;
+  }
+
+  .dd-panel li {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.3s var(--ease-out-eh),
+      transform 0.45s var(--ease-out-eh);
+  }
+
+  .dd-panel[data-open="true"] li {
+    opacity: 1;
+    transform: none;
+  }
+
+  .dd-panel[data-open="true"] li:nth-child(2) { transition-delay: 30ms; }
+  .dd-panel[data-open="true"] li:nth-child(3) { transition-delay: 60ms; }
+  .dd-panel[data-open="true"] li:nth-child(4) { transition-delay: 90ms; }
+  .dd-panel[data-open="true"] li:nth-child(5) { transition-delay: 120ms; }
+  .dd-panel[data-open="true"] li:nth-child(6) { transition-delay: 150ms; }
+
+  /* --- Menu mobile ---------------------------------------------------------- */
+  .mm-panel {
+    opacity: 0;
+    visibility: hidden;
+    clip-path: inset(0 0 100% 0);
+    transition:
+      clip-path 0.5s var(--ease-eh),
+      opacity 0.2s linear 0.3s,
+      visibility 0s linear 0.5s;
+  }
+
+  .mm-panel[data-open="true"] {
+    opacity: 1;
+    visibility: visible;
+    clip-path: inset(0 0 0 0);
+    transition:
+      clip-path 0.5s var(--ease-eh),
+      opacity 0s,
+      visibility 0s;
+  }
+
+  .mm-panel .mm-item {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.35s var(--ease-out-eh),
+      transform 0.5s var(--ease-out-eh);
+  }
+
+  .mm-panel[data-open="true"] .mm-item {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(0.12s + var(--i, 0) * 45ms);
+  }
+
+  .mm-toggle .mm-icon {
+    transition: transform 0.4s var(--ease-eh);
+  }
+
+  .mm-toggle[aria-expanded="true"] .mm-icon {
+    transform: rotate(90deg);
+  }
+
+  /* --- En-tête collant : ombre et logo resserré au défilement -------------- */
+  .site-header .hb-logo {
+    transform-origin: left center;
+    transition: transform 0.35s var(--ease-eh);
+  }
+
+  .site-header .hb-bar {
+    transition: box-shadow 0.35s var(--ease-eh);
+  }
+
+  .site-header[data-scrolled="true"] .hb-logo {
+    transform: scale(0.88);
+  }
+
+  .site-header[data-scrolled="true"] .hb-bar {
+    box-shadow: 0 10px 30px -18px rgb(0 0 0 / 0.45);
+  }
+
+  /* --- Titres fantômes et barre sous les titres ---------------------------- */
+  .eh-label {
+    position: relative;
+  }
+
+  .eh-ghost {
+    position: absolute;
+    left: -0.04em;
+    top: 50%;
+    z-index: -1;
+    transform: translateY(-38%);
+    font-family: var(--font-display);
+    font-stretch: 118%;
+    font-weight: 800;
+    font-size: clamp(3.6rem, 11vw, 9.5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 1px rgb(11 11 11 / 0.075);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .eh-ghost[data-tone="dark"] {
+    -webkit-text-stroke-color: rgb(250 250 247 / 0.07);
+  }
+
+  .eh-label + :is(h1, h2)::after {
+    content: "";
+    display: block;
+    width: 3.5rem;
+    height: 4px;
+    margin-top: 0.42em;
+    background: var(--color-signal);
+    transform-origin: left center;
+    transition: transform 0.8s var(--ease-eh) 0.25s;
+  }
+
+  /* --- Cartes : barre jaune qui balaie le bas au survol -------------------- */
+  .card-eh {
+    position: relative;
+  }
+
+  .card-eh::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 3px;
+    background: var(--color-signal);
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 0.5s var(--ease-eh);
+    pointer-events: none;
+  }
+
+  @media (hover: hover) {
+    .card-eh:hover::after {
+      transform: scaleX(1);
+      transform-origin: left center;
+    }
+  }
+
+  .card-eh:focus-visible::after,
+  .card-eh:active::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+
+  /* --- Photos : bloc décalé et dévoilement --------------------------------- */
+  .media-offset-light {
+    box-shadow: 16px 16px 0 0 var(--color-ink);
+  }
+
+  .media-offset-dark {
+    box-shadow:
+      14px 14px 0 -1px var(--color-ink),
+      14px 14px 0 0 var(--color-signal);
+  }
+
+  .media-img {
+    clip-path: inset(0 0 0 0);
+    transition:
+      clip-path 1.05s var(--ease-eh),
+      transform 1.4s var(--ease-out-eh);
+  }
+
+  /* --- Révélations au défilement (classes posées par MotionRoot) ----------- */
+  .motion-ok .rv {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+    transition:
+      opacity 0.7s var(--ease-out-eh),
+      transform 0.9s var(--ease-out-eh);
+    transition-delay: var(--rv-delay, 0ms);
+  }
+
+  .motion-ok .rv.is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  .motion-ok .rv:not(.is-in) .media-img {
+    clip-path: inset(0 100% 0 0);
+    transform: scale(1.12);
+  }
+
+  .motion-ok .rv:not(.is-in) .eh-label + :is(h1, h2)::after {
+    transform: scaleX(0);
+  }
+
+  /* --- Accueil : entrée de l’en-tête et parallaxe légère ------------------- */
+  @keyframes eh-rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 28px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes eh-settle {
+    from {
+      transform: scale(1.14);
+    }
+    to {
+      transform: scale(1.06);
+    }
+  }
+
+  .hero-rise {
+    animation: eh-rise 0.9s var(--ease-out-eh) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  .hero-bg {
+    animation: eh-settle 1.8s var(--ease-out-eh) both;
+  }
+
+  .hero-bg-inner {
+    transform: translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -10px), 0);
+    transition: transform 0.6s var(--ease-out-eh);
+  }
+
+  /* Les sections contiennent leurs titres fantômes et leurs décalages */
+  main section {
+    isolation: isolate;
+    overflow-x: clip;
+  }
+}
+
+@media print {
+  .motion-ok .rv,
+  .motion-ok .rv:not(.is-in) .media-img {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-ok .rv,
+  .motion-ok .rv:not(.is-in) .media-img {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+
+  .hero-bg-inner {
+    transform: none !important;
   }
 }

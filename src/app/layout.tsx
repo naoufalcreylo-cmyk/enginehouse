@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import { SiteFooter } from "@/components/footer";
 import { SiteHeader } from "@/components/header";
+import { MotionRoot } from "@/components/motion-root";
 import { JsonLd } from "@/components/ui";
 import { site } from "@/config/site";
 import { organizationJsonLd } from "@/lib/seo";
@@ -61,6 +62,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <SiteFooter />
+        <MotionRoot />
       </body>
     </html>
   );

@@ -1,9 +1,13 @@
+import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
+import { HeroBackdrop } from "@/components/hero-backdrop";
 import { ArrowRight } from "@/components/icons";
 import { BrandStrip, ButtonLink, CardImage, ContactDetails, MediaSlot, Nameplate, SectionLabel, TextLink } from "@/components/ui";
 import { site } from "@/config/site";
 import { categories } from "@/content/catalogue";
 import { approach, facilities, sectors } from "@/content/company";
+import { media } from "@/content/media";
 import { MACHINES, services } from "@/content/services";
 import { quoteHref } from "@/lib/quote";
 import { pageMetadata } from "@/lib/seo";
@@ -25,32 +29,51 @@ export default function HomePage() {
   return (
     <>
       {/* ------------------------------------------------------------ HERO */}
-      <section className="tech-grid relative overflow-hidden bg-ink text-bone">
-        <div className="container-eh grid gap-12 pb-12 pt-14 lg:grid-cols-12 lg:gap-10 lg:pb-20 lg:pt-20">
-          <div className="lg:col-span-7">
-            <SectionLabel tone="dark">Maintenance · Reconditionnement · Composants</SectionLabel>
-            <h1 className="mt-6 text-[2.6rem] font-extrabold leading-[0.98] sm:text-6xl lg:text-[4.6rem] [font-stretch:112%]">
+      <section data-no-reveal className="relative overflow-hidden bg-ink text-bone">
+        {media.hero && <HeroBackdrop photo={media.hero} />}
+        <div className="container-eh relative grid gap-12 pb-14 pt-16 lg:min-h-[min(46rem,calc(100svh-7.25rem))] lg:grid-cols-12 lg:items-center lg:gap-10 lg:pb-24 lg:pt-24">
+          <div className="lg:col-span-8 xl:col-span-7">
+            <div className="hero-rise" style={{ "--d": "0.05s" } as CSSProperties}>
+              <SectionLabel tone="dark" ghost={false}>Maintenance · Reconditionnement · Composants</SectionLabel>
+            </div>
+            <h1
+              className="hero-rise mt-6 text-[2.6rem] font-extrabold leading-[0.98] sm:text-6xl lg:text-[4.9rem] [font-stretch:112%]"
+              style={{ "--d": "0.15s" } as CSSProperties}
+            >
               L’expertise qui remet vos engins <span className="text-signal">en mouvement.</span>
             </h1>
-            <p className="mt-7 max-w-xl text-lg leading-relaxed text-steel-300">
+            <p
+              className="hero-rise mt-7 max-w-xl text-lg leading-relaxed text-steel-300"
+              style={{ "--d": "0.3s" } as CSSProperties}
+            >
               Diagnostic sur site, reconditionnement des organes majeurs et fourniture de composants : Engine House aide
               les entreprises du BTP, du terrassement, des mines et des carrières à réduire l’immobilisation de leurs
               machines.
             </p>
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <div className="hero-rise mt-10 flex flex-col gap-3 sm:flex-row" style={{ "--d": "0.42s" } as CSSProperties}>
               <ButtonLink href={quoteHref()}>Demander un devis</ButtonLink>
               <ButtonLink href="/nos-metiers" variant="outline-light">
                 Découvrir nos métiers
               </ButtonLink>
             </div>
           </div>
-          <div className="relative lg:col-span-5">
-            <MediaSlot slot="hero" figure="engine" tone="dark" figureNumber="FIG. 01" priority className="min-h-[300px] lg:h-full" />
-          </div>
+          {media.hero ? (
+            <p className="flex items-center gap-4 self-end justify-self-start font-mono text-[10px] uppercase tracking-[0.16em] text-steel-300 lg:col-span-4 lg:justify-self-end xl:col-span-5">
+              <span>
+                <span className="text-signal">FIG. 01 — </span>
+                Moteur diesel industriel
+              </span>
+              <span className="text-steel-400">Photo d’illustration</span>
+            </p>
+          ) : (
+            <div className="relative lg:col-span-4 xl:col-span-5">
+              <MediaSlot slot="hero" figure="engine" tone="dark" figureNumber="FIG. 01" priority className="min-h-[300px] lg:h-full" />
+            </div>
+          )}
         </div>
 
         {/* Repères factuels issus du document de présentation */}
-        <div className="border-t border-bone/15">
+        <div className="relative border-t border-bone/15 bg-ink/70 backdrop-blur-[2px]">
           <dl className="container-eh grid grid-cols-2 lg:grid-cols-4">
             {[
               { value: `Depuis ${site.history.activitySince}`, label: "au cœur de la maintenance d’engins de terrassement" },
@@ -60,7 +83,8 @@ export default function HomePage() {
             ].map((s, i) => (
               <div
                 key={s.label}
-                className={`py-6 pr-4 sm:py-8 ${i % 2 === 1 ? "border-l border-bone/15 pl-4 sm:pl-6" : ""} ${
+                style={{ "--d": `${0.5 + i * 0.08}s` } as CSSProperties}
+                className={`hero-rise py-6 pr-4 sm:py-8 ${i % 2 === 1 ? "border-l border-bone/15 pl-4 sm:pl-6" : ""} ${
                   i >= 2 ? "border-t border-bone/15 lg:border-t-0" : ""
                 } ${i === 2 ? "lg:border-l lg:pl-6" : ""}`}
               >
@@ -144,7 +168,7 @@ export default function HomePage() {
             {/* Métier mis en avant */}
             <Link
               href={`/nos-metiers/${featured.slug}`}
-              className="on-light group relative flex flex-col bg-ink p-8 text-bone lg:col-span-6 lg:row-span-3 lg:p-10"
+              className="on-light card-eh group relative flex flex-col bg-ink p-8 text-bone lg:col-span-6 lg:row-span-3 lg:p-10"
             >
               <span className="font-mono text-xs tracking-[0.16em] text-signal">{featured.code}</span>
               <h3 className="mt-4 text-3xl font-extrabold sm:text-4xl">{featured.title}</h3>
@@ -160,7 +184,7 @@ export default function HomePage() {
               <Link
                 key={s.slug}
                 href={`/nos-metiers/${s.slug}`}
-                className="on-light group grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-4 sm:gap-5 bg-white p-6 transition-colors hover:bg-paper sm:p-8 lg:col-span-6"
+                className="on-light card-eh group grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-4 sm:gap-5 bg-white p-6 transition-colors hover:bg-paper sm:p-8 lg:col-span-6"
               >
                 <span className="pt-1.5 font-mono text-xs tracking-[0.16em] text-steel-600">{s.code}</span>
                 <span>
@@ -176,7 +200,7 @@ export default function HomePage() {
             {/* Location : offre distincte */}
             <Link
               href={`/nos-metiers/${rental.slug}`}
-              className="on-light group grid items-center gap-6 bg-paper p-6 sm:p-8 lg:col-span-12 lg:grid-cols-12"
+              className="on-light card-eh group grid items-center gap-6 bg-paper p-6 sm:p-8 lg:col-span-12 lg:grid-cols-12"
             >
               <span className="font-mono text-xs tracking-[0.16em] text-steel-600 lg:col-span-1">{rental.code}</span>
               <span className="lg:col-span-6">
@@ -238,7 +262,7 @@ export default function HomePage() {
                 <li key={c.slug}>
                   <Link
                     href={`/catalogue/${c.slug}`}
-                    className="on-light group flex h-full flex-col border border-steel-300 bg-white transition-colors hover:border-ink"
+                    className="on-light card-eh group flex h-full flex-col border border-steel-300 bg-white transition-colors hover:border-ink"
                   >
                     <span className="flex items-center justify-between border-b border-dashed border-steel-300 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-steel-600">
                       <span>{c.code}</span>
@@ -258,7 +282,13 @@ export default function HomePage() {
       </section>
 
       {/* --------------------------------------------------------- MOYENS */}
-      <section className="tech-grid bg-coal text-bone">
+      <section className="tech-grid relative bg-coal text-bone">
+        {/* Photo d’ambiance atténuée en fond de section (décorative) */}
+        {media.site1 && (
+          <div aria-hidden="true" className="absolute inset-0 -z-10">
+            <Image src={media.site1.src} alt="" fill sizes="100vw" className="object-cover opacity-[0.12] grayscale" />
+          </div>
+        )}
         <div className="container-eh py-20 lg:py-28">
           <div className="max-w-3xl">
             <SectionLabel index="04" tone="dark">
@@ -349,7 +379,7 @@ export default function HomePage() {
                 { label: "Louer une pelle hydraulique", href: quoteHref({ type: "location" }) },
               ].map((a) => (
                 <li key={a.label}>
-                  <Link href={a.href} className="group flex items-center justify-between gap-4 bg-ink p-5 font-semibold hover:bg-graphite">
+                  <Link href={a.href} className="card-eh group flex items-center justify-between gap-4 bg-ink p-5 font-semibold transition-colors duration-300 hover:bg-graphite">
                     {a.label}
                     <ArrowRight className="size-4 text-signal transition-transform group-hover:translate-x-1" />
                   </Link>

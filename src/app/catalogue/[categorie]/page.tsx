@@ -84,7 +84,7 @@ export default async function CategoryPage({ params }: PageProps<"/catalogue/[ca
               </div>
             )}
             {service && (
-              <Link href={`/nos-metiers/${service.slug}`} className="on-light group flex items-center justify-between gap-4 border border-steel-300 bg-white p-5 hover:border-ink">
+              <Link href={`/nos-metiers/${service.slug}`} className="on-light card-eh group flex items-center justify-between gap-4 border border-steel-300 bg-white p-5 hover:border-ink">
                 <span>
                   <span className="block font-mono text-[11px] uppercase tracking-[0.14em] text-steel-600">Métier associé</span>
                   <span className="mt-1 block font-semibold">{service.title}</span>
