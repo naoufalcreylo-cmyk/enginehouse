@@ -16,6 +16,7 @@ export default function ServicesIndexPage() {
   return (
     <>
       <PageHero
+        photo="reconditionnement"
         crumbs={[{ name: "Nos métiers", href: "/nos-metiers" }]}
         label="Nos métiers"
         title="Maintenir, reconditionner, fournir : tout ce qui garde vos engins en service"

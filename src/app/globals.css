@@ -606,3 +606,213 @@
     transform: none !important;
   }
 }
+
+/* ==========================================================================
+ * Mouvements — deuxième série (carrousels, compteurs, icônes, bandeaux)
+ * ========================================================================== */
+
+@layer components {
+  /* --- Cartes à icône : l’icône se soulève, son détail jaune s’anime ------- */
+  .line-icon {
+    transition: transform 0.5s var(--ease-back-eh);
+  }
+
+  .line-icon .ic-accent {
+    fill: var(--color-signal);
+    stroke: none;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.6s var(--ease-back-eh);
+  }
+
+  .line-icon .ic-accent-stroke {
+    stroke: var(--color-signal);
+    stroke-width: 2.4;
+    stroke-dasharray: 40;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.7s var(--ease-eh);
+  }
+
+  .icon-card {
+    transition:
+      background-color 0.4s var(--ease-eh),
+      box-shadow 0.4s var(--ease-eh);
+  }
+
+  @media (hover: hover) {
+    .icon-card:hover .line-icon {
+      transform: translateY(-4px);
+    }
+
+    .icon-card:hover .ic-accent {
+      transform: scale(1.18) rotate(-8deg);
+    }
+
+    .icon-card:hover .ic-accent-stroke {
+      animation: eh-draw 0.7s var(--ease-eh);
+    }
+  }
+
+  @keyframes eh-draw {
+    from {
+      stroke-dashoffset: 40;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* Les icônes se dessinent à l’entrée de la carte à l’écran */
+  .motion-ok .rv:not(.is-in) .ic-accent {
+    transform: scale(0);
+  }
+
+  .motion-ok .rv:not(.is-in) .ic-accent-stroke {
+    stroke-dashoffset: 40;
+  }
+
+  .motion-ok .rv .ic-accent,
+  .motion-ok .rv .ic-accent-stroke {
+    transition-delay: calc(var(--rv-delay, 0ms) + 0.35s);
+  }
+
+  /* --- Chiffres en contour (inspirés des compteurs du modèle) ------------- */
+  .num-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgb(250 250 247 / 0.85);
+    transition:
+      color 0.5s var(--ease-eh),
+      -webkit-text-stroke-color 0.5s var(--ease-eh);
+  }
+
+  .num-outline-dark {
+    -webkit-text-stroke-color: var(--color-ink);
+  }
+
+  @media (hover: hover) {
+    :hover > .num-outline,
+    .crop-marks:hover .num-outline {
+      color: var(--color-signal);
+      -webkit-text-stroke-color: var(--color-signal);
+    }
+  }
+
+  /* --- Carrousel de logos -------------------------------------------------- */
+  .marquee-track {
+    animation: eh-marquee 32s linear infinite;
+  }
+
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track,
+  .marquee[data-paused="true"] .marquee-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes eh-marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* --- Diaporama d’en-tête ------------------------------------------------- */
+  .hero-slide {
+    opacity: 0;
+    transition: opacity 1.2s var(--ease-eh);
+  }
+
+  .hero-slide[data-active="true"] {
+    opacity: 1;
+  }
+
+  .hero-slide .hero-slide-img {
+    transform: scale(1.1);
+    transition: transform 7.5s linear;
+  }
+
+  .hero-slide[data-active="true"] .hero-slide-img {
+    transform: scale(1);
+  }
+
+  .hero-dot-fill {
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  .hero-dot-fill[data-active="true"] {
+    transform: scaleX(1);
+  }
+
+  .hero-dot-fill[data-active="true"][data-playing="true"] {
+    animation: eh-progress linear both;
+  }
+
+  @keyframes eh-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  .hero-caption {
+    animation: eh-fade-up 0.6s var(--ease-out-eh) both;
+  }
+
+  @keyframes eh-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* --- Bandeaux de page : zoom lent de la photo ---------------------------- */
+  .page-hero-photo {
+    animation: eh-banner 2.4s var(--ease-out-eh) both;
+  }
+
+  @keyframes eh-banner {
+    from {
+      transform: scale(1.12);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1.02);
+      opacity: 0.4;
+    }
+  }
+
+  /* --- Photo sur fond clair : bloc jaune décalé (comme sur le modèle) ------ */
+  .media-offset-light {
+    box-shadow: -16px 16px 0 0 var(--color-signal);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none !important;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .marquee-track > [aria-hidden="true"],
+  .marquee-toggle {
+    display: none !important;
+  }
+
+  .marquee-track > li {
+    flex: 1 1 33%;
+  }
+
+  .hero-slide .hero-slide-img {
+    transform: none !important;
+  }
+
+  .motion-ok .rv:not(.is-in) .ic-accent {
+    transform: none !important;
+  }
+}

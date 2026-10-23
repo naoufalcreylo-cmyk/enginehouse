@@ -19,6 +19,7 @@ export default function CataloguePage() {
   return (
     <>
       <PageHero
+        photo="cat-moteurs"
         crumbs={[{ name: "Catalogue", href: "/catalogue" }]}
         label="Catalogue sur cotation"
         title="Composants et pièces de rechange pour engins lourds"

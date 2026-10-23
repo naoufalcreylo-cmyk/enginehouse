@@ -1,4 +1,6 @@
 import { CtaBand, MediaSlot, PageHero, SectionLabel, TextLink } from "@/components/ui";
+import { LineIcon } from "@/components/line-icons";
+import { CountUp } from "@/components/count-up";
 import { site } from "@/config/site";
 import { team } from "@/content/company";
 import { BRANDS } from "@/content/services";
@@ -16,6 +18,7 @@ export default function AboutPage() {
   return (
     <>
       <PageHero
+        photo="about"
         crumbs={[{ name: "À propos", href: "/a-propos" }]}
         label="À propos d’Engine House"
         title="Née d’un constat simple : chaque heure d’arrêt coûte cher"
@@ -62,7 +65,7 @@ export default function AboutPage() {
                 <div className="flex flex-col gap-1 bg-ink p-6">
                   <dt className="text-sm text-steel-400">d’expérience cumulée dans les moteurs thermiques</dt>
                   <dd className="order-first font-display text-5xl font-extrabold [font-stretch:118%]">
-                    + de {site.history.engineExperienceYears} ans
+                    <CountUp value={`+ de ${site.history.engineExperienceYears} ans`} />
                   </dd>
                 </div>
               </dl>
@@ -97,20 +100,23 @@ export default function AboutPage() {
           <ul className="mt-12 grid gap-px border border-steel-200 bg-steel-200 md:grid-cols-3">
             {[
               {
+                icon: "tests" as const,
                 t: "Des organes testés",
                 d: "Chaque moteur, pompe hydraulique, boîte de vitesses et réducteur fait l’objet de tests rigoureux avant sa remise en service.",
               },
               {
+                icon: "sur-mesure" as const,
                 t: "Une offre adaptée",
                 d: "Nous accompagnons les entreprises du terrassement, des mines et des carrières en adaptant notre offre au profil et aux exigences de chacune.",
               },
               {
+                icon: "marques" as const,
                 t: "Des composants pour les grandes marques",
                 d: "Une gamme de composants neufs ou reconditionnés, compatibles avec les principales marques d’engins.",
               },
             ].map((c) => (
-              <li key={c.t} className="bg-white p-7">
-                <span aria-hidden="true" className="block h-1 w-8 bg-signal" />
+              <li key={c.t} className="icon-card group bg-white p-7">
+                <LineIcon name={c.icon} className="size-12 text-ink" />
                 <h3 className="mt-5 text-xl font-extrabold">{c.t}</h3>
                 <p className="mt-2 text-steel-700">{c.d}</p>
               </li>

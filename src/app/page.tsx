@@ -1,7 +1,9 @@
 import Image from "next/image";
+import { LineIcon } from "@/components/line-icons";
+import { CountUp } from "@/components/count-up";
 import Link from "next/link";
 import type { CSSProperties } from "react";
-import { HeroBackdrop } from "@/components/hero-backdrop";
+import { HeroCaption, HeroCarousel, type HeroSlide } from "@/components/hero-backdrop";
 import { ArrowRight } from "@/components/icons";
 import { BrandStrip, ButtonLink, CardImage, ContactDetails, MediaSlot, Nameplate, SectionLabel, TextLink } from "@/components/ui";
 import { site } from "@/config/site";
@@ -22,6 +24,14 @@ export const metadata = {
   title: { absolute: "Engine House Import Export — Maintenance et composants pour engins lourds" },
 };
 
+/** Photos du diaporama d’en-tête (la première reprend la légende d’origine). */
+const heroSlides: HeroSlide[] = [
+  { photo: media.hero, caption: "Moteur diesel industriel" },
+  { photo: media.reconditionnement, caption: "Culasse de moteur en révision" },
+  { photo: media.diagnostic, caption: "Pelle hydraulique en carrière" },
+  { photo: media.location, caption: "Pelle hydraulique sur chenilles" },
+].filter((s): s is HeroSlide => s.photo !== null);
+
 export default function HomePage() {
   const [featured, ...others] = services;
   const rental = others.pop()!;
@@ -30,7 +40,7 @@ export default function HomePage() {
     <>
       {/* ------------------------------------------------------------ HERO */}
       <section data-no-reveal className="relative overflow-hidden bg-ink text-bone">
-        {media.hero && <HeroBackdrop photo={media.hero} />}
+        <HeroCarousel slides={heroSlides}>
         <div className="container-eh relative grid gap-12 pb-14 pt-16 lg:min-h-[min(46rem,calc(100svh-7.25rem))] lg:grid-cols-12 lg:items-center lg:gap-10 lg:pb-24 lg:pt-24">
           <div className="lg:col-span-8 xl:col-span-7">
             <div className="hero-rise" style={{ "--d": "0.05s" } as CSSProperties}>
@@ -57,14 +67,8 @@ export default function HomePage() {
               </ButtonLink>
             </div>
           </div>
-          {media.hero ? (
-            <p className="flex items-center gap-4 self-end justify-self-start font-mono text-[10px] uppercase tracking-[0.16em] text-steel-300 lg:col-span-4 lg:justify-self-end xl:col-span-5">
-              <span>
-                <span className="text-signal">FIG. 01 — </span>
-                Moteur diesel industriel
-              </span>
-              <span className="text-steel-400">Photo d’illustration</span>
-            </p>
+          {heroSlides.length > 0 ? (
+            <HeroCaption className="hero-rise self-end lg:col-span-4 xl:col-span-5" />
           ) : (
             <div className="relative lg:col-span-4 xl:col-span-5">
               <MediaSlot slot="hero" figure="engine" tone="dark" figureNumber="FIG. 01" priority className="min-h-[300px] lg:h-full" />
@@ -91,7 +95,7 @@ export default function HomePage() {
                 <dt className="sr-only">{s.label}</dt>
                 <dd>
                   <span className="block font-display text-2xl font-extrabold text-bone sm:text-3xl [font-stretch:115%]">
-                    {s.value}
+                    <CountUp value={s.value} delay={650 + i * 90} />
                   </span>
                   <span className="mt-1 block text-sm leading-snug text-steel-400">{s.label}</span>
                 </dd>
@@ -99,6 +103,7 @@ export default function HomePage() {
             ))}
           </dl>
         </div>
+        </HeroCarousel>
       </section>
 
       {/* ------------------------------------------------- SECTEURS & MARQUES */}
@@ -116,8 +121,11 @@ export default function HomePage() {
           </div>
           <ol className="grid gap-px self-start border border-steel-200 bg-steel-200 sm:grid-cols-2 lg:col-span-7">
             {sectors.map((s) => (
-              <li key={s.code} className="bg-bone p-6 sm:p-8">
-                <span className="font-mono text-[11px] tracking-[0.16em] text-steel-600">{s.code}</span>
+              <li key={s.code} className="icon-card group bg-bone p-6 sm:p-8">
+                <div className="flex items-start justify-between gap-4">
+                  <span className="font-mono text-[11px] tracking-[0.16em] text-steel-600">{s.code}</span>
+                  <LineIcon name={s.icon} className="size-12 text-ink" />
+                </div>
                 <h3 className="mt-3 text-2xl font-extrabold">{s.title}</h3>
                 <p className="mt-2 text-[0.98rem] text-steel-700">{s.text}</p>
               </li>
@@ -300,7 +308,9 @@ export default function HomePage() {
             {facilities.map((f) => (
               <article key={f.code} className="crop-marks flex flex-col border border-bone/15 bg-ink/60 p-7 sm:p-10">
                 <p className="font-mono text-xs tracking-[0.18em] text-signal">{f.code}</p>
-                <p className="mt-4 font-display text-6xl font-extrabold sm:text-7xl [font-stretch:120%]">{f.area}</p>
+                <p className="num-outline mt-4 font-display text-6xl font-extrabold sm:text-7xl [font-stretch:120%]">
+                  <CountUp value={f.area} />
+                </p>
                 <h3 className="mt-4 text-2xl font-bold">{f.title}</h3>
                 {f.zones ? (
                   <ul className="mt-6 grid gap-x-6 gap-y-2 text-[0.95rem] text-steel-300 sm:grid-cols-2">

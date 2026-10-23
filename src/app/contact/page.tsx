@@ -17,6 +17,7 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
+        photo="diagnostic"
         crumbs={[{ name: "Contact", href: "/contact" }]}
         label="Contact et devis"
         title="Parlons de votre engin, de votre panne ou de votre besoin"

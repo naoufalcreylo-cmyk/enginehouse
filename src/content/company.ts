@@ -1,23 +1,29 @@
 /** Contenus institutionnels : secteurs, démarche, moyens, équipe. */
 
+import type { LineIconName } from "@/components/line-icons";
+
 export const sectors = [
   {
     code: "S-01",
+    icon: "btp" as LineIconName,
     title: "BTP",
     text: "Des engins disponibles pour tenir les plannings et sécuriser l’avancement des travaux.",
   },
   {
     code: "S-02",
+    icon: "terrassement" as LineIconName,
     title: "Terrassement",
     text: "Pelles, bulldozers, niveleuses et chargeuses, sollicités au quotidien sur les chantiers.",
   },
   {
     code: "S-03",
+    icon: "mines" as LineIconName,
     title: "Mines",
     text: "Assistance et maintenance sur mesure pour des exploitations qui ne peuvent pas s’arrêter.",
   },
   {
     code: "S-04",
+    icon: "carrieres" as LineIconName,
     title: "Carrières",
     text: "Concasseurs fixes ou mobiles, chargeuses et organes soumis à des cycles intensifs.",
   },
@@ -52,7 +58,7 @@ export type Facility = {
   areaValue: number;
   title: string;
   text: string;
-  zones?: { title: string; text: string }[];
+  zones?: { title: string; text: string; icon: LineIconName }[];
 };
 
 export const facilities: Facility[] = [
@@ -72,26 +78,32 @@ export const facilities: Facility[] = [
     zones: [
       {
         title: "Magasin de pièces de rechange",
+        icon: "magasin" as LineIconName,
         text: "Stockage organisé des pièces neuves et d’occasion, préparation et conditionnement des expéditions.",
       },
       {
         title: "Espace de lavage industriel",
+        icon: "lavage" as LineIconName,
         text: "Nettoyage des organes avant démontage pour une inspection fiable des pièces.",
       },
       {
         title: "Espace banc d’essai",
+        icon: "banc" as LineIconName,
         text: "Contrôles et mesures des composants avant leur restitution.",
       },
       {
         title: "Montage des moteurs thermiques",
+        icon: "moteur" as LineIconName,
         text: "Remontage des moteurs selon les préconisations des constructeurs.",
       },
       {
         title: "Montage des pompes et moteurs hydrauliques",
+        icon: "hydraulique" as LineIconName,
         text: "Un espace dédié au remontage des composants hydrauliques.",
       },
       {
         title: "Station de charge pour moteurs thermiques",
+        icon: "charge" as LineIconName,
         text: "Essais des moteurs en charge pour valider leur comportement avant remise en service.",
       },
     ],

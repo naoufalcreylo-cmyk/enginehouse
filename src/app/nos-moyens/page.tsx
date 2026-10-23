@@ -1,4 +1,6 @@
 import { CtaBand, MediaSlot, PageHero, SectionLabel, TextLink } from "@/components/ui";
+import { LineIcon } from "@/components/line-icons";
+import { CountUp } from "@/components/count-up";
 import { facilities } from "@/content/company";
 import { quoteHref } from "@/lib/quote";
 import { pageMetadata } from "@/lib/seo";
@@ -12,18 +14,22 @@ export const metadata = pageMetadata({
 
 const benefits = [
   {
+    icon: "inspection" as const,
     t: "Inspection",
     d: "Le lavage industriel et le démontage méthodique permettent d’examiner chaque pièce dans de bonnes conditions.",
   },
   {
+    icon: "essais" as const,
     t: "Essais",
     d: "Banc d’essai, station de charge et tests en conditions quasi réelles valident le comportement avant remise en service.",
   },
   {
+    icon: "flux" as const,
     t: "Flux maîtrisés",
     d: "Des espaces dédiés à chaque famille d’organes structurent le travail et sécurisent chaque étape du processus.",
   },
   {
+    icon: "tracabilite" as const,
     t: "Traçabilité",
     d: "Cette organisation permet une traçabilité complète des interventions réalisées.",
   },
@@ -34,6 +40,7 @@ export default function FacilitiesPage() {
   return (
     <>
       <PageHero
+        photo="site1"
         crumbs={[{ name: "Nos moyens", href: "/nos-moyens" }]}
         label="Nos moyens techniques"
         title="Des infrastructures structurées autour de deux sites complémentaires"
@@ -45,7 +52,9 @@ export default function FacilitiesPage() {
         <div className="container-eh grid gap-12 py-16 lg:grid-cols-12 lg:items-center lg:py-24">
           <div className="lg:col-span-6">
             <SectionLabel index={site1.code}>Premier site</SectionLabel>
-            <p className="mt-6 font-display text-7xl font-extrabold leading-none sm:text-8xl [font-stretch:120%]">{site1.area}</p>
+            <p className="num-outline num-outline-dark mt-6 font-display text-7xl font-extrabold leading-none sm:text-8xl [font-stretch:120%]">
+              <CountUp value={site1.area} />
+            </p>
             <h2 className="mt-5 text-3xl font-extrabold sm:text-4xl">{site1.title}</h2>
             <p className="mt-5 text-lg leading-relaxed text-steel-700">{site1.text}</p>
           </div>
@@ -63,7 +72,9 @@ export default function FacilitiesPage() {
               <SectionLabel index={site2.code} tone="dark">
                 Second site
               </SectionLabel>
-              <p className="mt-6 font-display text-7xl font-extrabold leading-none sm:text-8xl [font-stretch:120%]">{site2.area}</p>
+              <p className="num-outline mt-6 font-display text-7xl font-extrabold leading-none sm:text-8xl [font-stretch:120%]">
+                <CountUp value={site2.area} />
+              </p>
               <h2 className="mt-5 text-3xl font-extrabold sm:text-4xl">{site2.title}</h2>
               <p className="mt-5 max-w-2xl text-lg leading-relaxed text-steel-300">{site2.text}</p>
             </div>
@@ -74,8 +85,11 @@ export default function FacilitiesPage() {
 
           <ol className="mt-14 grid gap-px border border-bone/15 bg-bone/15 sm:grid-cols-2 lg:grid-cols-3">
             {site2.zones?.map((z, i) => (
-              <li key={z.title} className="bg-ink p-7">
-                <span className="font-mono text-xs tracking-[0.16em] text-signal">ZONE {String(i + 1).padStart(2, "0")}</span>
+              <li key={z.title} className="icon-card group bg-ink p-7">
+                <div className="flex items-start justify-between gap-4">
+                  <span className="font-mono text-xs tracking-[0.16em] text-signal">ZONE {String(i + 1).padStart(2, "0")}</span>
+                  <LineIcon name={z.icon} className="size-12 text-bone" />
+                </div>
                 <h3 className="mt-4 text-xl font-bold">{z.title}</h3>
                 <p className="mt-2 text-[0.96rem] text-steel-300">{z.text}</p>
               </li>
@@ -95,8 +109,8 @@ export default function FacilitiesPage() {
           </div>
           <ul className="mt-12 grid gap-px border border-steel-200 bg-steel-200 sm:grid-cols-2 lg:grid-cols-4">
             {benefits.map((b) => (
-              <li key={b.t} className="bg-white p-7">
-                <span aria-hidden="true" className="block h-1 w-8 bg-signal" />
+              <li key={b.t} className="icon-card group bg-white p-7">
+                <LineIcon name={b.icon} className="size-12 text-ink" />
                 <h3 className="mt-5 text-xl font-extrabold">{b.t}</h3>
                 <p className="mt-2 text-[0.98rem] text-steel-700">{b.d}</p>
               </li>

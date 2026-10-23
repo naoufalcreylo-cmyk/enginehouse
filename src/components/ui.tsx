@@ -5,6 +5,7 @@ import { Figure, figureLabels, type FigureKey } from "@/components/figures";
 import { ArrowRight, MailIcon, PhoneIcon, PinIcon, WhatsAppIcon } from "@/components/icons";
 import { formatAddress, site } from "@/config/site";
 import { media, type MediaSlotKey } from "@/content/media";
+import { BrandMarquee } from "@/components/brand-marquee";
 
 /* -------------------------------------------------------------------------- */
 /* Typographie de section                                                      */
@@ -223,19 +224,9 @@ export function BrandStrip({ title = "Intervention sur engins et moteurs de marq
   return (
     <div>
       <p className="font-mono text-xs uppercase tracking-[0.16em] text-steel-600">{title}</p>
-      <ul className="mt-5 grid grid-cols-2 gap-px border border-steel-200 bg-steel-200 sm:grid-cols-3 lg:grid-cols-6">
-        {brandLogos.map((b) => (
-          <li key={b.name} className="group flex h-24 items-center justify-center bg-white px-5">
-            {/* eslint-disable-next-line @next/next/no-img-element -- logos SVG vectoriels, sans optimisation nécessaire */}
-            <img
-              src={b.src}
-              alt={b.name}
-              className={`${b.h} w-auto max-w-full opacity-75 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0`}
-              loading="lazy"
-            />
-          </li>
-        ))}
-      </ul>
+      <div className="mt-5">
+        <BrandMarquee logos={brandLogos} />
+      </div>
       <p className="mt-3 text-xs text-steel-600">
         Marques et logos cités à titre d’identification des engins et moteurs sur lesquels nous intervenons. Ils
         appartiennent à leurs propriétaires respectifs ; leur mention n’implique aucun partenariat ni agrément.
@@ -336,6 +327,7 @@ export function PageHero({
   intro,
   children,
   aside,
+  photo,
 }: {
   crumbs: Crumb[];
   label: string;
@@ -343,9 +335,27 @@ export function PageHero({
   intro?: string;
   children?: ReactNode;
   aside?: ReactNode;
+  /** Photo d’ambiance atténuée en fond de bandeau (décorative) */
+  photo?: MediaSlotKey;
 }) {
+  const bg = photo ? media[photo] : null;
   return (
     <section className="tech-grid relative overflow-hidden bg-ink text-bone">
+      {bg && (
+        <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden">
+          <Image
+            src={bg.src}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="page-hero-photo object-cover opacity-40"
+            style={bg.position ? { objectPosition: bg.position } : undefined}
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(11_11_11/0.95)_0%,rgb(11_11_11/0.8)_50%,rgb(11_11_11/0.55)_100%)]" />
+          <div className="tech-grid absolute inset-0" />
+        </div>
+      )}
       <div className="container-eh grid gap-10 pb-14 pt-10 lg:grid-cols-12 lg:gap-12 lg:pb-20 lg:pt-14">
         <div className={aside ? "lg:col-span-7" : "lg:col-span-10"}>
           <Breadcrumbs items={crumbs} />
