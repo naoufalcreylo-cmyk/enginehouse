@@ -7,7 +7,7 @@
  * Engine House pourra compléter avec la référence constructeur exacte.
  */
 
-export type GalleryFamily = "moteurs" | "injection" | "transmissions";
+export type GalleryFamily = "moteurs" | "injection" | "hydraulique" | "transmissions";
 
 export type GalleryItem = {
   ref: string;
@@ -26,6 +26,7 @@ export type GalleryItem = {
 export const galleryFamilies: { value: GalleryFamily; label: string }[] = [
   { value: "moteurs", label: "Moteurs" },
   { value: "injection", label: "Injection" },
+  { value: "hydraulique", label: "Hydraulique" },
   { value: "transmissions", label: "Transmissions et réducteurs" },
 ];
 
@@ -55,6 +56,7 @@ export const gallery: GalleryItem[] = [
   { ref: "EH-G21", src: g(21), width: 1280, height: 960, family: "moteurs", title: "Moteur diesel avec calculateur", alt: "Moteur diesel jaune avec calculateur électronique et collecteur d’admission" },
   { ref: "EH-G22", src: g(22), width: 720, height: 1280, family: "transmissions", title: "Réducteurs de grande taille", alt: "Deux réducteurs de grande taille peints en jaune, empilés" },
   { ref: "EH-G23", src: g(23), width: 1080, height: 810, family: "transmissions", title: "Réducteurs d’orientation", alt: "Deux réducteurs avec pignon de sortie et anneaux de levage" },
+  { ref: "EH-G24", src: g(24), width: 560, height: 315, family: "hydraulique", title: "Pompes hydrauliques en stock", alt: "Pompes hydrauliques principales rangées sur une étagère du stock (détail de la photo EH-G09)" },
 ];
 
 export function galleryItem(ref: string) {

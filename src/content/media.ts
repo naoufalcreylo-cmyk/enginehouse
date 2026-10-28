@@ -5,7 +5,7 @@
  * (voir aussi la galerie, src/content/galerie.ts). Aucune autre photo n’est
  * utilisée. Une entrée à `null` affiche une planche technique dessinée : c’est
  * le cas lorsqu’aucune photo transmise ne correspond au sujet (pelle
- * hydraulique, pompe hydraulique).
+ * hydraulique).
  *
  * Pour changer une photo : remplacer `item("EH-Gxx")` par une autre référence
  * de la galerie, ou ajouter un fichier dans /public/photos/.
@@ -68,7 +68,7 @@ export const media: Record<MediaSlotKey, Photo | null> = {
   "banner-metiers": item("EH-G21"),
   livraison: item("EH-G20"),
   "cat-moteurs": item("EH-G18", "50% 35%"),
-  "cat-hydraulique": null,
+  "cat-hydraulique": item("EH-G24"),
   "cat-transmissions": item("EH-G05"),
   "cat-reducteurs": item("EH-G12"),
   "cat-injection": item("EH-G03"),
