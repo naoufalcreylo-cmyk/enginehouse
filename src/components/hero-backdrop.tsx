@@ -108,7 +108,7 @@ export function HeroCarousel({ slides, children }: { slides: HeroSlide[]; childr
           </div>
         </div>
         {/* Voile sombre : garantit la lisibilité du texte sur la photo */}
-        <div className="absolute inset-0 bg-ink/75 lg:bg-[linear-gradient(90deg,rgb(11_11_11/0.93)_0%,rgb(11_11_11/0.78)_42%,rgb(11_11_11/0.28)_78%,rgb(11_11_11/0.12)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgb(11_11_11/0.72)_0%,rgb(11_11_11/0.5)_70%,rgb(11_11_11/0.6)_100%)]" />
         <div className="tech-grid absolute inset-0" />
       </div>
       {children}

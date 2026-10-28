@@ -25,11 +25,7 @@ export function SectionLabel({
 }) {
   return (
     <div className="eh-label">
-      {ghost && (
-        <span aria-hidden="true" className="eh-ghost" data-tone={tone}>
-          {children}
-        </span>
-      )}
+      {ghost && <span aria-hidden="true" className="eh-ghost" data-tone={tone} />}
       <p
         className={`flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.18em] ${
           tone === "dark" ? "text-steel-300" : "text-steel-600"
@@ -352,22 +348,36 @@ export function PageHero({
             className="page-hero-photo object-cover opacity-40"
             style={bg.position ? { objectPosition: bg.position } : undefined}
           />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(11_11_11/0.95)_0%,rgb(11_11_11/0.8)_50%,rgb(11_11_11/0.55)_100%)]" />
+          <div className={`absolute inset-0 ${aside ? "bg-[linear-gradient(90deg,rgb(11_11_11/0.95)_0%,rgb(11_11_11/0.8)_50%,rgb(11_11_11/0.55)_100%)]" : "bg-ink/65"}`} />
           <div className="tech-grid absolute inset-0" />
         </div>
       )}
-      <div className="container-eh grid gap-10 pb-14 pt-10 lg:grid-cols-12 lg:gap-12 lg:pb-20 lg:pt-14">
-        <div className={aside ? "lg:col-span-7" : "lg:col-span-10"}>
-          <Breadcrumbs items={crumbs} />
-          <div className="mt-10 lg:mt-14">
-            <SectionLabel tone="dark">{label}</SectionLabel>
+      {aside ? (
+        <div className="container-eh grid gap-10 pb-14 pt-10 lg:grid-cols-12 lg:gap-12 lg:pb-20 lg:pt-14">
+          <div className="lg:col-span-7">
+            <Breadcrumbs items={crumbs} />
+            <div className="mt-10 lg:mt-14">
+              <SectionLabel tone="dark">{label}</SectionLabel>
+            </div>
+            <h1 className="hyphenate mt-5 break-words text-[clamp(1.8rem,8vw,2.35rem)] font-extrabold sm:text-5xl lg:text-[3.4rem]">{title}</h1>
+            {intro && <p className="mt-6 max-w-2xl text-lg leading-relaxed text-steel-300">{intro}</p>}
+            {children && <div className="mt-8">{children}</div>}
           </div>
-          <h1 className="hyphenate mt-5 break-words text-[clamp(1.8rem,8vw,2.35rem)] font-extrabold sm:text-5xl lg:text-[3.6rem]">{title}</h1>
-          {intro && <p className="mt-6 max-w-2xl text-lg leading-relaxed text-steel-300">{intro}</p>}
-          {children && <div className="mt-8">{children}</div>}
+          <div className="lg:col-span-5 lg:self-end">{aside}</div>
         </div>
-        {aside && <div className="lg:col-span-5 lg:self-end">{aside}</div>}
-      </div>
+      ) : (
+        <div className="container-eh flex flex-col items-center py-16 text-center lg:py-24">
+          <div className="page-hero-centered flex justify-center">
+            <SectionLabel tone="dark" ghost={false}>{label}</SectionLabel>
+          </div>
+          <h1 className="hyphenate mt-5 max-w-4xl break-words text-[clamp(1.8rem,8vw,2.35rem)] font-extrabold sm:text-5xl lg:text-[3.6rem]">{title}</h1>
+          {intro && <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-steel-300">{intro}</p>}
+          {children && <div className="mt-8">{children}</div>}
+          <div className="mt-8 flex justify-center">
+            <Breadcrumbs items={crumbs} />
+          </div>
+        </div>
+      )}
       <div aria-hidden="true" className="h-1.5 w-full bg-[repeating-linear-gradient(135deg,var(--color-signal)_0_14px,var(--color-ink)_14px_28px)] opacity-90" />
     </section>
   );

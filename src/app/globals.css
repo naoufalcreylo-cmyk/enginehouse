@@ -22,9 +22,10 @@
   --color-paper: #f3f2ed;
   --color-bone: #fafaf7;
 
-  --font-display: var(--font-archivo), "Arial Narrow", Arial, sans-serif;
-  --font-sans: var(--font-plex-sans), "Segoe UI", Arial, sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, Consolas, monospace;
+  --font-display: var(--font-open-sans), "Segoe UI", Arial, sans-serif;
+  --font-sans: var(--font-open-sans), "Segoe UI", Arial, sans-serif;
+  /* Les petites étiquettes techniques gardent la police du thème */
+  --font-mono: var(--font-open-sans), "Segoe UI", Arial, sans-serif;
 
   --breakpoint-xs: 26rem;
 
@@ -54,11 +55,21 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    font-stretch: 108%;
-    line-height: 1.04;
-    letter-spacing: -0.015em;
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
     text-wrap: balance;
     hyphens: manual;
+  }
+
+  h1,
+  h2 {
+    text-transform: uppercase;
+  }
+
+  h3,
+  h4 {
+    font-weight: 700;
   }
 
   p {
@@ -815,4 +826,220 @@
   .motion-ok .rv:not(.is-in) .ic-accent {
     transform: none !important;
   }
+}
+
+/* ==========================================================================
+ * Thème calqué sur le modèle de référence (Backhoe / enginehouse.ma)
+ * ========================================================================== */
+
+@layer components {
+  /* --- En-tête sombre, transparent au-dessus du diaporama d’accueil -------- */
+  .site-header .hb-bar {
+    transition:
+      background-color 0.4s var(--ease-eh),
+      border-color 0.4s var(--ease-eh),
+      box-shadow 0.35s var(--ease-eh);
+  }
+
+  .site-header[data-scrolled="false"] .hb-bar[data-home="true"] {
+    background-color: rgb(11 11 11 / 0.18);
+    border-color: rgb(250 250 247 / 0.12);
+    backdrop-filter: blur(2px);
+  }
+
+  /* Le diaporama passe sous la barre transparente */
+  .hero-home {
+    margin-top: -4.5rem;
+  }
+
+  @media (min-width: 64rem) {
+    .hero-home {
+      margin-top: -5rem;
+    }
+  }
+
+  /* Légende et commandes centrées sous le texte d’accueil */
+  .hero-caption-centered,
+  .hero-caption-centered > div,
+  .hero-caption-centered .hero-caption {
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* --- Titre fantôme : reprend le titre, en contour, derrière lui --------- */
+  .eh-ghost {
+    top: 0.1em;
+    left: -0.06em;
+    width: 125%;
+    transform: none;
+    font-size: clamp(2.6rem, 1.4rem + 4.4vw, 5.6rem);
+    line-height: 1.05;
+    white-space: normal;
+    -webkit-text-stroke: 1px rgb(11 11 11 / 0.09);
+  }
+
+  .eh-ghost[data-tone="dark"] {
+    -webkit-text-stroke-color: rgb(250 250 247 / 0.09);
+  }
+
+  .page-hero-centered .eh-label {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* --- Accordéon (FAQ) ------------------------------------------------------ */
+  .acc-head {
+    background: transparent;
+    color: var(--color-ink);
+    transition:
+      background-color 0.4s var(--ease-eh),
+      color 0.4s var(--ease-eh);
+  }
+
+  @media (hover: hover) {
+    .acc-item:not([data-open="true"]) .acc-head:hover {
+      background-color: rgb(253 185 22 / 0.12);
+    }
+  }
+
+  .acc-item[data-open="true"] .acc-head {
+    background-color: var(--color-signal);
+  }
+
+  .acc-icon::before,
+  .acc-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 2px;
+    margin-top: -1px;
+    background: currentColor;
+    transition: transform 0.4s var(--ease-eh);
+  }
+
+  .acc-icon::after {
+    transform: rotate(90deg);
+  }
+
+  .acc-item[data-open="true"] .acc-icon::after {
+    transform: rotate(0deg);
+  }
+
+  .acc-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows 0.45s var(--ease-eh),
+      visibility 0s linear 0.45s;
+  }
+
+  .acc-item[data-open="true"] .acc-panel {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition:
+      grid-template-rows 0.45s var(--ease-eh),
+      visibility 0s;
+  }
+
+  /* --- Galerie ------------------------------------------------------------- */
+  .gal-tab {
+    border-color: var(--color-steel-300);
+    background: var(--color-white, #fff);
+    color: var(--color-ink);
+    transition:
+      background-color 0.35s var(--ease-eh),
+      border-color 0.35s var(--ease-eh),
+      color 0.35s var(--ease-eh);
+  }
+
+  .gal-tab-count {
+    color: var(--color-steel-600);
+  }
+
+  @media (hover: hover) {
+    .gal-tab:hover {
+      border-color: var(--color-ink);
+    }
+  }
+
+  .gal-tab[aria-selected="true"] {
+    background: var(--color-signal);
+    border-color: var(--color-signal);
+  }
+
+  .gal-tab[aria-selected="true"] .gal-tab-count {
+    color: var(--color-ink);
+  }
+
+  .gal-item {
+    animation: eh-fade-up 0.55s var(--ease-out-eh) both;
+  }
+
+  .gal-overlay {
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-eh);
+  }
+
+  .gal-overlay > span {
+    transform: scale(0.6);
+    transition: transform 0.45s var(--ease-back-eh);
+  }
+
+  @media (hover: hover) {
+    .group:hover .gal-overlay {
+      opacity: 1;
+    }
+
+    .group:hover .gal-overlay > span {
+      transform: scale(1);
+    }
+  }
+
+  button:focus-visible .gal-overlay {
+    opacity: 1;
+  }
+
+  .gal-dialog[open] {
+    animation: eh-fade-up 0.35s var(--ease-out-eh);
+  }
+
+  .gal-dialog::backdrop {
+    animation: eh-backdrop 0.35s linear;
+  }
+
+  .gal-zoom {
+    animation: eh-zoom-in 0.45s var(--ease-out-eh);
+  }
+
+  @keyframes eh-backdrop {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes eh-zoom-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+}
+
+/* Taille des titres de section, comme sur le modèle (prime sur les utilitaires) */
+/* Un élément de grille ne doit jamais s’élargir au contenu (ex. piste du carrousel de logos) */
+.container-eh.grid > *,
+.container-eh > .grid > * {
+  min-width: 0;
+}
+
+.eh-ghost::before {
+  content: attr(data-text);
+}
+
+.eh-label + h2 {
+  font-size: clamp(2rem, 1.2rem + 2.8vw, 3.75rem);
+  line-height: 1.12;
 }

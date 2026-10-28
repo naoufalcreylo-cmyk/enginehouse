@@ -14,7 +14,7 @@ export default function WarrantyPage() {
   return (
     <>
       <PageHero
-        photo="cat-pieces"
+        photo="livraison"
         crumbs={[{ name: "Garanties et livraison", href: "/garanties-et-livraison" }]}
         label="Engagements"
         title="Garanties et livraison"

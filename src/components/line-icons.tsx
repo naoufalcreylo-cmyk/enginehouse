@@ -23,7 +23,9 @@ export type LineIconName =
   | "banc"
   | "moteur"
   | "hydraulique"
-  | "charge";
+  | "charge"
+  | "calendrier"
+  | "surface";
 
 const icons: Record<LineIconName, ReactNode> = {
   btp: (
@@ -143,6 +145,20 @@ const icons: Record<LineIconName, ReactNode> = {
       <circle cx="20" cy="24" r="12" />
       <circle cx="20" cy="24" r="4" className="ic-accent" />
       <path d="M32 24h10M37 19v10M20 12V6M20 42v-6" />
+    </>
+  ),
+  calendrier: (
+    <>
+      <rect x="7" y="11" width="34" height="30" />
+      <path d="M7 19h34M15 6v9M33 6v9" />
+      <rect x="27" y="27" width="8" height="8" className="ic-accent" />
+    </>
+  ),
+  surface: (
+    <>
+      <path d="M6 14h36v26H6z" />
+      <path d="M6 22h8M34 14v8M14 40v-8" />
+      <path d="M20 20h14v14H20z" className="ic-accent" />
     </>
   ),
   charge: (

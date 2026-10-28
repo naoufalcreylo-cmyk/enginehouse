@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/catalogue",
     ...categories.map((c) => `/catalogue/${c.slug}`),
     ...products.map((p) => `/catalogue/produit/${p.slug}`),
+    "/galerie",
     "/nos-moyens",
     "/contact",
     "/garanties-et-livraison",

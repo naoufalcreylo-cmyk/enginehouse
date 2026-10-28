@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import { SiteFooter } from "@/components/footer";
 import { SiteHeader } from "@/components/header";
 import { MotionRoot } from "@/components/motion-root";
@@ -8,24 +8,11 @@ import { site } from "@/config/site";
 import { organizationJsonLd } from "@/lib/seo";
 import "./globals.css";
 
-const archivo = Archivo({
-  variable: "--font-archivo",
+// Police unique du thème, comme sur le modèle de référence (Open Sans)
+const openSans = Open_Sans({
+  variable: "--font-open-sans",
   subsets: ["latin", "latin-ext"],
-  axes: ["wdth"],
-  display: "swap",
-});
-
-const plexSans = IBM_Plex_Sans({
-  variable: "--font-plex-sans",
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const plexMono = IBM_Plex_Mono({
-  variable: "--font-plex-mono",
-  subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "600", "700", "800"],
   display: "swap",
 });
 
@@ -48,7 +35,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr" className={`${archivo.variable} ${plexSans.variable} ${plexMono.variable} antialiased`}>
+    <html lang="fr" className={`${openSans.variable} antialiased`}>
       <body className="flex min-h-dvh flex-col overflow-x-clip">
         <a
           href="#contenu"

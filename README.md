@@ -66,7 +66,9 @@ Pour utiliser un autre fournisseur (SMTP, Brevo, etc.), il suffit de remplacer `
 
 **Règle d’affichage :** une coordonnée (e-mail, WhatsApp, lien carte, horaires, réseaux) n’apparaît sur le site que si elle est renseignée dans `site.ts`.
 
-**Photos :** 15 photos d’illustration sous licence libre (Wikimedia Commons, CC0 / CC BY / CC BY-SA / domaine public) sont en place dans `public/photos/`. Elles portent la mention « Photo d’illustration » et leurs auteurs et licences sont publiés sur `/credits-photos`, ce qu’exigent les licences CC BY et CC BY-SA. Pour remplacer une photo par une photo authentique d’Engine House : déposer le fichier dans `public/photos/`, mettre à jour `src`, `alt`, `width` et `height` dans `media.ts`, et retirer `credit` et `isIllustrative`. Une entrée à `null` réaffiche la planche technique dessinée.
+**Photos :** le site n’utilise que les photos transmises par Engine House (23 photos, dans `public/photos/galerie/`). Elles sont décrites et référencées (EH-G01 à EH-G23) dans `src/content/galerie.ts` : titre, famille, marque et marquage **uniquement s’ils sont lisibles sur la photo**. `src/content/media.ts` choisit quelle photo de la galerie s’affiche à chaque emplacement ; une entrée à `null` affiche le schéma dessiné (aucune photo transmise ne montre de pelle ni de pompe hydraulique). Pour ajouter une photo : déposer le fichier, ajouter une ligne dans `galerie.ts` (elle apparaît automatiquement dans la galerie, avec son bouton de devis).
+
+**Galerie :** page `/galerie` avec filtres (Moteurs, Injection, Transmissions et réducteurs), visionneuse plein écran (flèches du clavier, Échap) et lien direct `/galerie#EH-G05`. Le bouton « Demander un devis » préremplit la référence de la photo dans le formulaire.
 
 **Logos de marques :** `public/marques/` contient les logos Caterpillar et Volvo (Simple Icons, CC0) et Komatsu, Doosan, Liebherr et Cummins (Wikimedia Commons, domaine public au titre du droit d’auteur). Ce sont des marques déposées : ils sont affichés en niveaux de gris, avec une mention précisant qu’ils servent à identifier les engins et n’impliquent aucun partenariat. Faire valider leur usage si Engine House a des accords particuliers avec ces marques.
 
@@ -104,6 +106,8 @@ Visuels authentiques :
 - L’organisation de l’équipe reprend uniquement les fonctions et effectifs du document, sans noms ni portraits.
 
 ## Notes techniques
+
+- **Thème** : calqué sur le modèle de référence enginehouse.ma (thème WordPress « Backhoe ») — police Open Sans, titres en majuscules avec titre fantôme en contour, en-tête sombre transparent sur le diaporama d’accueil, bandeau de chiffres sur photo, colonnes à icônes, section sombre sur photo, FAQ en accordéon, bandeaux de page centrés sur photo. Les textes restent ceux du site (français), sans contenu de démonstration du modèle.
 
 - **Mouvement et interactions** (`src/app/globals.css`, section « Mouvement et interactions ») : boutons à remplissage balayé (`.btn-eh` + `.btn-primary`, `.btn-dark`, `.btn-outline`, `.btn-outline-light`), surlignage de navigation (`.nav-hl`), sous-menu et menu mobile animés (`.dd-panel`, `.mm-panel`), barre de survol des cartes (`.card-eh`), titres fantômes (prop `ghost` de `SectionLabel`), photos à cadre décalé et dévoilement. Les révélations au défilement sont posées automatiquement par `src/components/motion-root.tsx` sur les blocs des sections ; ajouter `data-no-reveal` sur une section pour l’exclure. Tout est désactivé avec `prefers-reduced-motion`, et les effets de survol ont un équivalent au clavier (`:focus-visible`) et au toucher (`:active`).
 

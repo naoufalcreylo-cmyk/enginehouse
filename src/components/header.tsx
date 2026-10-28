@@ -8,7 +8,7 @@ import { ArrowRight, ChevronDown, CloseIcon, MenuIcon, PhoneIcon } from "@/compo
 import { site } from "@/config/site";
 import { isActive, mainNav } from "@/content/navigation";
 import { quoteHref } from "@/lib/quote";
-import logo from "../../public/brand/engine-house-logo.png";
+import logo from "../../public/brand/engine-house-logo-negatif.png";
 
 export function SiteHeader() {
   const headerRef = useRef<HTMLElement>(null);
@@ -34,7 +34,7 @@ export function SiteHeader() {
   }, []);
 
   return (
-    <header ref={headerRef} className="site-header sticky top-0 z-50">
+    <header ref={headerRef} className="site-header sticky top-0 z-50" data-scrolled="false">
       <div className="hidden bg-ink text-steel-300 md:block">
         <div className="container-eh flex h-9 items-center justify-between font-mono text-[11px] uppercase tracking-[0.14em]">
           <p>Maintenance · Reconditionnement · Composants pour engins lourds</p>
@@ -116,18 +116,28 @@ function HeaderBar({ pathname }: { pathname: string | null }) {
   };
 
   return (
-    <div className="hb-bar on-light relative border-b border-steel-200 bg-white">
+    <div className="hb-bar relative border-b border-bone/10 bg-ink text-bone" data-home={pathname === "/"}>
       <div className="container-eh flex h-[4.5rem] items-center justify-between gap-6 lg:h-20">
-        <Link href="/" onClick={closeAll} className="shrink-0 py-2" aria-label="Engine House Import Export — accueil">
-          <Image src={logo} alt="" priority className="hb-logo h-11 w-auto lg:h-14" sizes="130px" />
-        </Link>
+        <div className="flex shrink-0 items-center gap-6">
+          <Link href="/" onClick={closeAll} className="shrink-0 py-2" aria-label="Engine House Import Export — accueil">
+            <Image src={logo} alt="" priority className="hb-logo h-11 w-auto lg:h-14" sizes="130px" />
+          </Link>
+          {site.contact.phones[0] && (
+            <div className="hidden border-l border-bone/15 pl-6 2xl:block">
+              <p className="text-xs text-steel-400">Besoin d’aide ? Parlez à un expert</p>
+              <a href={`tel:${site.contact.phones[0].e164}`} className="text-lg font-bold text-signal hover:text-bone">
+                {site.contact.phones[0].label}
+              </a>
+            </div>
+          )}
+        </div>
 
         <nav aria-label="Navigation principale" className="hidden lg:block">
           <ul className="flex items-center gap-1">
             {mainNav.map((item) => {
               const active = isActive(pathname, item.href);
-              const base = `relative flex h-20 items-center gap-1.5 px-3 text-[0.94rem] font-semibold transition-colors duration-300 hover:text-ink ${
-                active ? "is-active text-ink" : "text-steel-700"
+              const base = `relative flex h-20 items-center gap-1.5 px-3 text-[0.94rem] font-bold transition-colors duration-300 hover:text-bone ${
+                active ? "is-active text-bone" : "text-bone/80"
               }`;
               if ("children" in item) {
                 return (
@@ -146,22 +156,22 @@ function HeaderBar({ pathname }: { pathname: string | null }) {
                     <div
                       id={panelId}
                       data-open={servicesOpen}
-                      className="dd-panel absolute left-1/2 top-full w-[38rem] border border-t-4 border-steel-200 border-t-signal bg-white shadow-[0_24px_48px_-24px_rgb(0_0_0/0.35)]"
+                      className="dd-panel absolute left-1/2 top-full w-[38rem] border border-t-4 border-bone/10 border-t-signal bg-ink shadow-[0_24px_48px_-24px_rgb(0_0_0/0.6)]"
                     >
                       <ul className="grid grid-cols-2">
                         {item.children.map((child) => (
-                          <li key={child.href} className="border-b border-r border-steel-100 [&:nth-child(2n)]:border-r-0">
+                          <li key={child.href} className="border-b border-r border-bone/10 [&:nth-child(2n)]:border-r-0">
                             <Link
                               href={child.href}
                               onClick={closeAll}
                               aria-current={pathname === child.href ? "page" : undefined}
-                              className="card-eh group block h-full p-5 transition-colors duration-300 hover:bg-paper"
+                              className="card-eh group block h-full p-5 transition-colors duration-300 hover:bg-graphite"
                             >
-                              <span className="font-mono text-[10px] tracking-[0.16em] text-steel-600">{child.code}</span>
-                              <span className="mt-1 block font-display text-[1.05rem] font-bold leading-snug text-ink">
+                              <span className="font-mono text-[10px] tracking-[0.16em] text-signal">{child.code}</span>
+                              <span className="mt-1 block font-display text-[1.05rem] font-bold leading-snug text-bone">
                                 {child.label}
                               </span>
-                              <span className="mt-1.5 block text-sm leading-snug text-steel-600">{child.summary}</span>
+                              <span className="mt-1.5 block text-sm leading-snug text-steel-400">{child.summary}</span>
                             </Link>
                           </li>
                         ))}
@@ -169,7 +179,7 @@ function HeaderBar({ pathname }: { pathname: string | null }) {
                           <Link
                             href="/nos-metiers"
                             onClick={closeAll}
-                            className="group flex h-full items-center justify-between gap-3 bg-ink p-5 font-semibold text-bone transition-colors duration-300 hover:text-signal"
+                            className="group flex h-full items-center justify-between gap-3 bg-signal p-5 font-bold uppercase tracking-wide text-ink transition-colors duration-300 hover:bg-bone"
                           >
                             Tous nos métiers
                             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -202,7 +212,7 @@ function HeaderBar({ pathname }: { pathname: string | null }) {
           <button
             ref={menuButtonRef}
             type="button"
-            className="mm-toggle inline-flex size-11 items-center justify-center border-2 border-ink text-ink transition-colors duration-300 hover:bg-ink hover:text-bone lg:hidden"
+            className="mm-toggle inline-flex size-11 items-center justify-center border-2 border-bone/60 text-bone transition-colors duration-300 hover:border-signal hover:bg-signal hover:text-ink lg:hidden"
             aria-expanded={mobileOpen}
             aria-controls={mobileId}
             onClick={() => setMobileOpen((v) => !v)}
@@ -217,10 +227,10 @@ function HeaderBar({ pathname }: { pathname: string | null }) {
       <div
         id={mobileId}
         data-open={mobileOpen}
-        className="mm-panel absolute inset-x-0 top-full h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-steel-200 bg-white lg:hidden"
+        className="mm-panel absolute inset-x-0 top-full h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-bone/10 bg-ink text-bone lg:hidden"
       >
         <nav aria-label="Navigation mobile" className="container-eh py-6">
-          <ul className="divide-y divide-steel-200 border-y border-steel-200">
+          <ul className="divide-y divide-bone/10 border-y border-bone/10">
             {mainNav.map((item, index) => (
               <li key={item.href} className="mm-item" style={{ "--i": index } as CSSProperties}>
                 <Link
@@ -233,11 +243,11 @@ function HeaderBar({ pathname }: { pathname: string | null }) {
                   {isActive(pathname, item.href) && <span aria-hidden="true" className="size-2.5 bg-signal" />}
                 </Link>
                 {"children" in item && (
-                  <ul className="mb-4 grid gap-px bg-steel-200">
+                  <ul className="mb-4 grid gap-px bg-bone/10">
                     {item.children.map((child) => (
-                      <li key={child.href} className="bg-paper">
+                      <li key={child.href} className="bg-graphite">
                         <Link href={child.href} onClick={closeAll} className="flex items-baseline gap-3 px-4 py-3 text-[0.98rem] font-medium">
-                          <span className="font-mono text-[10px] tracking-[0.14em] text-steel-600">{child.code}</span>
+                          <span className="font-mono text-[10px] tracking-[0.14em] text-signal">{child.code}</span>
                           {child.label}
                         </Link>
                       </li>
@@ -259,8 +269,8 @@ function HeaderBar({ pathname }: { pathname: string | null }) {
             <ul className="mm-item mt-6 space-y-2" style={{ "--i": mainNav.length + 1 } as CSSProperties}>
               {site.contact.phones.map((p) => (
                 <li key={p.e164}>
-                  <a href={`tel:${p.e164}`} className="flex items-center gap-3 py-1 font-medium">
-                    <PhoneIcon className="size-4" />
+                  <a href={`tel:${p.e164}`} className="flex items-center gap-3 py-1 font-medium hover:text-signal">
+                    <PhoneIcon className="size-4 text-signal" />
                     {p.label}
                   </a>
                 </li>

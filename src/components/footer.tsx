@@ -12,6 +12,7 @@ const companyLinks = [
   { href: "/a-propos", label: "À propos" },
   { href: "/nos-metiers", label: "Tous nos métiers" },
   { href: "/catalogue", label: "Tout le catalogue" },
+  { href: "/galerie", label: "Galerie" },
   { href: "/nos-moyens", label: "Nos moyens" },
   { href: "/garanties-et-livraison", label: "Garanties et livraison" },
   { href: "/contact", label: "Contact" },

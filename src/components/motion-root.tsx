@@ -16,6 +16,20 @@ const STAGGER_MIN = 3;
 
 export function MotionRoot() {
   useEffect(() => {
+    // Titres fantômes : reprennent le texte du titre qui suit le libellé
+    const ghosts = () => {
+      document.querySelectorAll(".eh-label").forEach((label) => {
+        const ghost = label.querySelector(".eh-ghost");
+        const heading = label.nextElementSibling;
+        // Attribut (affiché par CSS) plutôt que texte : n’interfère pas avec l’hydratation React
+        if (ghost && !ghost.hasAttribute("data-text") && heading?.matches("h1, h2")) {
+          ghost.setAttribute("data-text", heading.textContent ?? "");
+        }
+      });
+    };
+
+    ghosts();
+
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!("IntersectionObserver" in window)) return;
 
@@ -46,6 +60,7 @@ export function MotionRoot() {
     };
 
     const scan = () => {
+      ghosts();
       document.querySelectorAll(BLOCKS).forEach((block) => {
         const isList = block.matches("ul, ol, .grid");
         const kids = [...block.children];

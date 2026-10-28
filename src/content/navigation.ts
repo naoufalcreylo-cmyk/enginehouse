@@ -5,6 +5,7 @@ export const mainNav = [
   { href: "/a-propos", label: "À propos" },
   { href: "/nos-metiers", label: "Nos métiers", children: services.map((s) => ({ href: `/nos-metiers/${s.slug}`, label: s.navTitle, code: s.code, summary: s.summary })) },
   { href: "/catalogue", label: "Catalogue" },
+  { href: "/galerie", label: "Galerie" },
   { href: "/nos-moyens", label: "Nos moyens" },
   { href: "/contact", label: "Contact" },
 ] as const;

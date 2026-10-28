@@ -5,10 +5,14 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { HeroCaption, HeroCarousel, type HeroSlide } from "@/components/hero-backdrop";
 import { ArrowRight } from "@/components/icons";
-import { BrandStrip, ButtonLink, CardImage, ContactDetails, MediaSlot, Nameplate, SectionLabel, TextLink } from "@/components/ui";
+import { Accordion } from "@/components/accordion";
+import type { LineIconName } from "@/components/line-icons";
+import { BrandStrip, ButtonLink, CardImage, ContactDetails, JsonLd, MediaSlot, Nameplate, SectionLabel, TextLink } from "@/components/ui";
 import { site } from "@/config/site";
 import { categories } from "@/content/catalogue";
 import { approach, facilities, sectors } from "@/content/company";
+import { faq } from "@/content/faq";
+import { galleryItem } from "@/content/galerie";
 import { media } from "@/content/media";
 import { MACHINES, services } from "@/content/services";
 import { quoteHref } from "@/lib/quote";
@@ -24,13 +28,17 @@ export const metadata = {
   title: { absolute: "Engine House Import Export — Maintenance et composants pour engins lourds" },
 };
 
-/** Photos du diaporama d’en-tête (la première reprend la légende d’origine). */
-const heroSlides: HeroSlide[] = [
-  { photo: media.hero, caption: "Moteur diesel industriel" },
-  { photo: media.reconditionnement, caption: "Culasse de moteur en révision" },
-  { photo: media.diagnostic, caption: "Pelle hydraulique en carrière" },
-  { photo: media.location, caption: "Pelle hydraulique sur chenilles" },
-].filter((s): s is HeroSlide => s.photo !== null);
+/** Diaporama d’en-tête : photos transmises par Engine House (légende = titre et réf. de galerie). */
+const heroSlides: HeroSlide[] = ["EH-G11", "EH-G10", "EH-G15", "EH-G08"]
+  .map((ref) => galleryItem(ref))
+  .filter((g) => g !== undefined)
+  .map((g) => ({ photo: { src: g.src, alt: g.alt, width: g.width, height: g.height }, caption: `${g.title} · ${g.ref}` }));
+
+/** Extrait de la galerie affiché sur l’accueil */
+const galleryPreview = ["EH-G18", "EH-G03", "EH-G05", "EH-G12"].map((ref) => galleryItem(ref)).filter((g) => g !== undefined);
+
+/** Icônes des quatre étapes de la démarche */
+const stepIcons: LineIconName[] = ["inspection", "essais", "moteur", "tests"];
 
 export default function HomePage() {
   const [featured, ...others] = services;
@@ -39,94 +47,92 @@ export default function HomePage() {
   return (
     <>
       {/* ------------------------------------------------------------ HERO */}
-      <section data-no-reveal className="relative overflow-hidden bg-ink text-bone">
+      <section data-no-reveal className="hero-home relative overflow-hidden bg-ink text-bone">
         <HeroCarousel slides={heroSlides}>
-        <div className="container-eh relative grid gap-12 pb-14 pt-16 lg:min-h-[min(46rem,calc(100svh-7.25rem))] lg:grid-cols-12 lg:items-center lg:gap-10 lg:pb-24 lg:pt-24">
-          <div className="lg:col-span-8 xl:col-span-7">
-            <div className="hero-rise" style={{ "--d": "0.05s" } as CSSProperties}>
+          <div className="container-eh relative flex min-h-[calc(100svh-4.5rem)] flex-col items-center justify-center pb-10 pt-[calc(4.5rem+3rem)] text-center lg:min-h-[min(48rem,calc(100svh-7.25rem))] lg:pt-[calc(5rem+4rem)]">
+            <div className="hero-rise flex justify-center" style={{ "--d": "0.05s" } as CSSProperties}>
               <SectionLabel tone="dark" ghost={false}>Maintenance · Reconditionnement · Composants</SectionLabel>
             </div>
             <h1
-              className="hero-rise mt-6 text-[2.6rem] font-extrabold leading-[0.98] sm:text-6xl lg:text-[4.9rem] [font-stretch:112%]"
+              className="hero-rise mx-auto mt-6 max-w-5xl text-[2.4rem] font-extrabold leading-[1.02] sm:text-6xl lg:text-[5rem]"
               style={{ "--d": "0.15s" } as CSSProperties}
             >
               L’expertise qui remet vos engins <span className="text-signal">en mouvement.</span>
             </h1>
             <p
-              className="hero-rise mt-7 max-w-xl text-lg leading-relaxed text-steel-300"
+              className="hero-rise mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-steel-300"
               style={{ "--d": "0.3s" } as CSSProperties}
             >
               Diagnostic sur site, reconditionnement des organes majeurs et fourniture de composants : Engine House aide
               les entreprises du BTP, du terrassement, des mines et des carrières à réduire l’immobilisation de leurs
               machines.
             </p>
-            <div className="hero-rise mt-10 flex flex-col gap-3 sm:flex-row" style={{ "--d": "0.42s" } as CSSProperties}>
+            <div className="hero-rise mt-10 flex flex-col justify-center gap-3 sm:flex-row" style={{ "--d": "0.42s" } as CSSProperties}>
               <ButtonLink href={quoteHref()}>Demander un devis</ButtonLink>
               <ButtonLink href="/nos-metiers" variant="outline-light">
                 Découvrir nos métiers
               </ButtonLink>
             </div>
+            {heroSlides.length > 0 ? (
+              <HeroCaption className="hero-rise hero-caption-centered mt-auto w-full pt-14" />
+            ) : (
+              <MediaSlot slot="hero" figure="engine" tone="dark" figureNumber="FIG. 01" priority className="mt-10 min-h-[300px] w-full" />
+            )}
           </div>
-          {heroSlides.length > 0 ? (
-            <HeroCaption className="hero-rise self-end lg:col-span-4 xl:col-span-5" />
-          ) : (
-            <div className="relative lg:col-span-4 xl:col-span-5">
-              <MediaSlot slot="hero" figure="engine" tone="dark" figureNumber="FIG. 01" priority className="min-h-[300px] lg:h-full" />
-            </div>
-          )}
-        </div>
+        </HeroCarousel>
+      </section>
 
+      {/* ------------------------------------------------ CHIFFRES (sur photo) */}
+      <section className="relative bg-ink text-bone">
+        {media.counters && (
+          <div aria-hidden="true" className="absolute inset-0 -z-10">
+            <Image src={media.counters.src} alt="" fill sizes="100vw" className="object-cover opacity-30" style={media.counters.position ? { objectPosition: media.counters.position } : undefined} />
+            <div className="absolute inset-0 bg-ink/55" />
+          </div>
+        )}
         {/* Repères factuels issus du document de présentation */}
-        <div className="relative border-t border-bone/15 bg-ink/70 backdrop-blur-[2px]">
-          <dl className="container-eh grid grid-cols-2 lg:grid-cols-4">
+        <div className="container-eh py-16 lg:py-20">
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-12 text-center lg:grid-cols-4">
             {[
-              { value: `Depuis ${site.history.activitySince}`, label: "au cœur de la maintenance d’engins de terrassement" },
-              { value: `+ de ${site.history.engineExperienceYears} ans`, label: "d’expérience cumulée dans les moteurs thermiques" },
-              { value: facilities[0].area, label: "démontage, reconditionnement et essais" },
-              { value: facilities[1].area, label: "hydraulique, transmissions et moteurs" },
-            ].map((s, i) => (
-              <div
-                key={s.label}
-                style={{ "--d": `${0.5 + i * 0.08}s` } as CSSProperties}
-                className={`hero-rise py-6 pr-4 sm:py-8 ${i % 2 === 1 ? "border-l border-bone/15 pl-4 sm:pl-6" : ""} ${
-                  i >= 2 ? "border-t border-bone/15 lg:border-t-0" : ""
-                } ${i === 2 ? "lg:border-l lg:pl-6" : ""}`}
-              >
+              { value: `Depuis ${site.history.activitySince}`, label: "au cœur de la maintenance d’engins de terrassement", icon: "calendrier" as const },
+              { value: `+ de ${site.history.engineExperienceYears} ans`, label: "d’expérience cumulée dans les moteurs thermiques", icon: "moteur" as const },
+              { value: facilities[0].area, label: "démontage, reconditionnement et essais", icon: "surface" as const },
+              { value: facilities[1].area, label: "hydraulique, transmissions et moteurs", icon: "hydraulique" as const },
+            ].map((s) => (
+              <div key={s.label} className="icon-card group flex flex-col items-center">
                 <dt className="sr-only">{s.label}</dt>
-                <dd>
-                  <span className="block font-display text-2xl font-extrabold text-bone sm:text-3xl [font-stretch:115%]">
-                    <CountUp value={s.value} delay={650 + i * 90} />
+                <dd className="flex flex-col items-center">
+                  <LineIcon name={s.icon} className="size-14 text-signal" />
+                  <span className="num-outline mt-5 block whitespace-nowrap font-display text-[1.6rem] font-extrabold sm:text-4xl xl:text-5xl">
+                    <CountUp value={s.value} />
                   </span>
-                  <span className="mt-1 block text-sm leading-snug text-steel-400">{s.label}</span>
+                  <span className="mt-3 block max-w-[16rem] text-sm leading-snug text-steel-300">{s.label}</span>
                 </dd>
               </div>
             ))}
           </dl>
         </div>
-        </HeroCarousel>
       </section>
 
       {/* ------------------------------------------------- SECTEURS & MARQUES */}
       <section className="bg-bone">
         <div className="container-eh grid gap-12 py-20 lg:grid-cols-12 lg:py-28">
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-8">
             <SectionLabel index="01">Expertise et applications</SectionLabel>
             <h2 className="mt-5 text-4xl font-extrabold sm:text-5xl">
               Au service des chantiers qui ne peuvent pas s’arrêter
             </h2>
-            <p className="mt-6 text-lg text-steel-700">
+            <p className="mt-6 max-w-3xl text-lg text-steel-700">
               Nous intervenons sur l’ensemble des machines de chantier, toutes marques confondues, avec une maîtrise
               approfondie des moteurs diesel industriels, des composants hydrauliques et des organes de transmission.
             </p>
           </div>
-          <ol className="grid gap-px self-start border border-steel-200 bg-steel-200 sm:grid-cols-2 lg:col-span-7">
+          <ol className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:col-span-12 lg:grid-cols-4">
             {sectors.map((s) => (
-              <li key={s.code} className="icon-card group bg-bone p-6 sm:p-8">
-                <div className="flex items-start justify-between gap-4">
-                  <span className="font-mono text-[11px] tracking-[0.16em] text-steel-600">{s.code}</span>
-                  <LineIcon name={s.icon} className="size-12 text-ink" />
-                </div>
-                <h3 className="mt-3 text-2xl font-extrabold">{s.title}</h3>
+              <li key={s.code} className="icon-card group">
+                <LineIcon name={s.icon} className="size-14 text-ink" />
+                <span className="mt-5 block font-mono text-[11px] tracking-[0.16em] text-steel-600">{s.code}</span>
+                <h3 className="mt-1 text-xl font-bold">{s.title}</h3>
                 <p className="mt-2 text-[0.98rem] text-steel-700">{s.text}</p>
               </li>
             ))}
@@ -149,15 +155,21 @@ export default function HomePage() {
       </section>
 
       {/* -------------------------------------------------------- MANIFESTE */}
-      <section className="bg-signal text-ink">
-        <div className="container-eh grid gap-8 py-16 lg:grid-cols-12 lg:items-center lg:py-20">
-          <p className="text-[2rem] font-extrabold leading-[1.05] sm:text-5xl lg:col-span-8 font-display [font-stretch:110%]">
-            Sur un chantier, chaque heure d’immobilisation coûte cher.
-          </p>
-          <p className="text-lg lg:col-span-4">
-            C’est de ce constat qu’est née Engine House. Notre priorité : réduire le temps d’arrêt de vos machines et
-            sécuriser l’avancement de vos travaux.
-          </p>
+      <section className="bg-white">
+        <div className="container-eh grid items-center gap-14 py-20 lg:grid-cols-12 lg:py-28">
+          <div className="lg:col-span-6">
+            <MediaSlot slot="diagnostic" figure="engine" className="aspect-[4/3]" sizes="(min-width: 1024px) 45vw, 100vw" />
+          </div>
+          <div className="lg:col-span-6">
+            <p className="font-display text-[2rem] font-extrabold uppercase leading-[1.08] sm:text-5xl">
+              Sur un chantier, chaque heure d’immobilisation coûte cher.
+            </p>
+            <span aria-hidden="true" className="mt-6 block h-1 w-16 bg-signal" />
+            <p className="mt-6 text-lg text-steel-700">
+              C’est de ce constat qu’est née Engine House. Notre priorité : réduire le temps d’arrêt de vos machines et
+              sécuriser l’avancement de vos travaux.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -338,35 +350,94 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* --------------------------------------------------------- GALERIE */}
+      <section className="bg-bone">
+        <div className="container-eh py-20 lg:py-28">
+          <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+            <div className="max-w-2xl">
+              <SectionLabel>Galerie</SectionLabel>
+              <h2 className="mt-5 text-4xl font-extrabold sm:text-5xl">Moteurs, injection, transmissions</h2>
+              <p className="mt-6 text-lg text-steel-700">
+                Chaque photo porte une référence à rappeler dans votre demande de devis.
+              </p>
+            </div>
+            <TextLink href="/galerie">Voir toute la galerie</TextLink>
+          </div>
+          <ul className="mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            {galleryPreview.map((g) => (
+              <li key={g.ref}>
+                <Link href={`/galerie#${g.ref}`} className="card-eh group block">
+                  <span className="relative block aspect-square overflow-hidden bg-graphite">
+                    <Image src={g.src} alt={g.alt} fill sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.06]" />
+                    <span className="absolute left-3 top-3 bg-signal px-2 py-1 text-[11px] font-bold text-ink">{g.ref}</span>
+                  </span>
+                  <span className="mt-3 block text-sm font-bold leading-snug">{g.title}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {/* -------------------------------------------------------- DÉMARCHE */}
-      <section className="bg-white">
+      <section className="relative bg-ink text-bone">
+        {media.demarche && (
+          <div aria-hidden="true" className="absolute inset-0 -z-10">
+            <Image src={media.demarche.src} alt="" fill sizes="100vw" className="object-cover opacity-25 grayscale" style={media.demarche.position ? { objectPosition: media.demarche.position } : undefined} />
+            <div className="absolute inset-0 bg-ink/60" />
+          </div>
+        )}
         <div className="container-eh py-20 lg:py-28">
           <div className="grid gap-6 lg:grid-cols-12">
-            <div className="lg:col-span-6">
-              <SectionLabel index="05">Démarche</SectionLabel>
+            <div className="lg:col-span-7">
+              <SectionLabel index="05" tone="dark">Démarche</SectionLabel>
               <h2 className="mt-5 text-4xl font-extrabold sm:text-5xl">De la panne à la remise en service</h2>
             </div>
-            <p className="text-lg text-steel-700 lg:col-span-5 lg:col-start-8 lg:self-end">
+            <p className="text-lg text-steel-300 lg:col-span-5 lg:self-end">
               Nos méthodes de montage et de contrôle suivent les standards et tolérances des constructeurs d’origine.
             </p>
           </div>
-          <ol className="mt-14 grid gap-px border border-steel-200 bg-steel-200 md:grid-cols-2 lg:grid-cols-4">
+          <ol className="mt-14 grid gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-4">
             {approach.steps.map((s, i) => (
-              <li key={s.title} className="relative bg-white p-7">
-                <span className="font-display text-6xl font-extrabold text-steel-200 [font-stretch:120%]" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span aria-hidden="true" className="absolute left-7 top-[5.4rem] h-1 w-10 bg-signal" />
-                <h3 className="mt-6 text-xl font-extrabold">
+              <li key={s.title} className="icon-card group">
+                <div className="flex items-end justify-between">
+                  <LineIcon name={stepIcons[i]} className="size-14 text-bone" />
+                  <span aria-hidden="true" className="font-display text-5xl font-extrabold text-bone/15">{String(i + 1).padStart(2, "0")}</span>
+                </div>
+                <h3 className="mt-5 text-xl font-bold">
                   <span className="sr-only">Étape {i + 1} : </span>
                   {s.title}
                 </h3>
-                <p className="mt-2 text-[0.98rem] text-steel-700">{s.text}</p>
+                <p className="mt-2 text-[0.98rem] text-steel-300">{s.text}</p>
               </li>
             ))}
           </ol>
-          <p className="mt-6 max-w-3xl text-sm text-steel-600">{approach.note}</p>
+          <p className="mt-10 max-w-3xl text-sm text-steel-400">{approach.note}</p>
         </div>
+      </section>
+
+      {/* ------------------------------------------------------------ FAQ */}
+      <section className="bg-white">
+        <div className="container-eh grid gap-12 py-20 lg:grid-cols-12 lg:py-28">
+          <div className="lg:col-span-4">
+            <SectionLabel>Questions fréquentes</SectionLabel>
+            <h2 className="mt-5 text-4xl font-extrabold sm:text-5xl">Vos questions</h2>
+            <p className="mt-6 text-lg text-steel-700">Une autre question ? Nos équipes vous répondent.</p>
+            <div className="mt-8">
+              <TextLink href="/contact">Nous contacter</TextLink>
+            </div>
+          </div>
+          <div className="lg:col-span-8">
+            <Accordion items={faq} />
+          </div>
+        </div>
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+          }}
+        />
       </section>
 
       {/* -------------------------------------------------------- CONTACT */}
