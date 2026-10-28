@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Figure, figureLabels, type FigureKey } from "@/components/figures";
+import { figureLabels, type FigureKey } from "@/components/figures";
+import { LineIcon, type LineIconName } from "@/components/line-icons";
 import { ArrowRight, MailIcon, PhoneIcon, PinIcon, WhatsAppIcon } from "@/components/icons";
 import { formatAddress, site } from "@/config/site";
 import { media, type MediaSlotKey } from "@/content/media";
@@ -143,32 +144,44 @@ export function MediaSlot({
     );
   }
 
-  const dark = tone === "dark";
   return (
     <figure
-      className={`crop-marks relative flex flex-col overflow-hidden border ${
-        dark ? "tech-grid border-bone/15 bg-coal text-steel-300" : "tech-grid-light border-steel-200 bg-paper text-steel-700"
-      } ${className}`}
+      className={`relative flex flex-col overflow-hidden border border-bone/10 bg-ink text-bone ${tone === "dark" ? "media-offset-dark" : "media-offset-light"} ${className}`}
     >
-      <div className="flex flex-1 items-center justify-center p-6 sm:p-10">
-        <Figure name={figure} className="h-auto w-full max-w-[34rem]" />
-      </div>
-      <figcaption
-        className={`flex items-center justify-between gap-4 border-t px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.16em] ${
-          dark ? "border-bone/15 text-steel-400" : "border-steel-200 text-steel-600"
-        }`}
-      >
+      <NoPhotoTile figure={figure} />
+      <figcaption className="flex items-center gap-4 border-t border-bone/10 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.16em] text-steel-400">
         <span>
-          {figureNumber && <span className={dark ? "text-signal" : "text-ink"}>{figureNumber} — </span>}
+          {figureNumber && <span className="text-signal">{figureNumber} — </span>}
           {label}
         </span>
-        <span aria-hidden="true">Schéma</span>
       </figcaption>
     </figure>
   );
 }
 
-/** Vignette de carte : photo si disponible, sinon planche technique. */
+/** Icône associée à chaque famille, quand aucune photo du client n’existe. */
+const figureIcons: Record<FigureKey, LineIconName> = {
+  engine: "moteur",
+  pump: "hydraulique",
+  gearbox: "flux",
+  reducer: "hydraulique",
+  injector: "essais",
+  parts: "magasin",
+  excavator: "terrassement",
+  bench: "banc",
+};
+
+/** Tuile sombre avec grande icône jaune (remplace une photo absente). */
+function NoPhotoTile({ figure }: { figure: FigureKey }) {
+  return (
+    <span className="tech-grid icon-card group relative flex min-h-40 flex-1 items-center justify-center overflow-hidden">
+      <span aria-hidden="true" className="absolute -right-6 -top-6 size-28 rounded-full bg-signal/10" />
+      <LineIcon name={figureIcons[figure]} className="relative size-20 text-signal sm:size-24" />
+    </span>
+  );
+}
+
+/** Vignette de carte : photo si disponible, sinon tuile à icône. */
 export function CardImage({
   slot,
   figure,
@@ -195,8 +208,8 @@ export function CardImage({
           style={photo.position ? { objectPosition: photo.position } : undefined}
         />
       ) : (
-        <span className={`flex h-full items-center justify-center p-6 ${tone === "dark" ? "tech-grid text-steel-400" : "tech-grid-light text-steel-500"}`}>
-          <Figure name={figure} className="h-full w-auto" />
+        <span className="absolute inset-0 flex bg-ink text-bone">
+          <NoPhotoTile figure={figure} />
         </span>
       )}
     </span>
