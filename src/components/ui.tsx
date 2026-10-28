@@ -221,22 +221,22 @@ export function CardImage({
 /* -------------------------------------------------------------------------- */
 
 const brandLogos = [
-  { name: "Caterpillar", src: "/marques/caterpillar.svg", h: "h-10" },
-  { name: "Volvo", src: "/marques/volvo.svg", h: "h-11" },
-  { name: "Komatsu", src: "/marques/komatsu.svg", h: "h-5" },
-  { name: "Doosan", src: "/marques/doosan.svg", h: "h-5" },
-  { name: "Liebherr", src: "/marques/liebherr.svg", h: "h-5" },
-  { name: "Cummins", src: "/marques/cummins.svg", h: "h-10" },
+  { name: "Caterpillar", src: "/marques/caterpillar.svg", h: "h-14" },
+  { name: "Volvo", src: "/marques/volvo.svg", h: "h-14" },
+  { name: "Komatsu", src: "/marques/komatsu.svg", h: "h-7" },
+  { name: "Doosan", src: "/marques/doosan.svg", h: "h-7" },
+  { name: "Liebherr", src: "/marques/liebherr.svg", h: "h-7" },
+  { name: "Cummins", src: "/marques/cummins.svg", h: "h-14" },
 ];
 
 export function BrandStrip({ title = "Intervention sur engins et moteurs de marques" }: { title?: string }) {
   return (
     <div>
       <p className="font-mono text-xs uppercase tracking-[0.16em] text-steel-600">{title}</p>
-      <div className="mt-5">
+      <div className="mt-4">
         <BrandMarquee logos={brandLogos} />
       </div>
-      <p className="mt-3 text-xs text-steel-600">
+      <p className="mt-2 text-xs text-steel-600">
         Marques et logos cités à titre d’identification des engins et moteurs sur lesquels nous intervenons. Ils
         appartiennent à leurs propriétaires respectifs ; leur mention n’implique aucun partenariat ni agrément.
       </p>

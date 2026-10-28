@@ -1043,3 +1043,24 @@
   font-size: clamp(2rem, 1.2rem + 2.8vw, 3.75rem);
   line-height: 1.12;
 }
+
+/* --- Carrousel de logos : version épurée en couleurs --------------------- */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+}
+
+.marquee-track {
+  animation-duration: 38s;
+}
+
+.marquee-logo img {
+  transition: transform 0.45s var(--ease-back-eh), filter 0.45s var(--ease-eh);
+}
+
+@media (hover: hover) {
+  .marquee-logo:hover img {
+    transform: scale(1.12);
+    filter: drop-shadow(0 8px 14px rgb(0 0 0 / 0.12));
+  }
+}
