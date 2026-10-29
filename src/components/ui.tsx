@@ -257,9 +257,9 @@ export function Nameplate({ title, rows, className = "" }: { title: string; rows
       <p className="border-b border-bone/20 pb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-signal">{title}</p>
       <dl className="divide-y divide-bone/10">
         {rows.map((r) => (
-          <div key={r.label} className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-4 py-3">
+          <div key={r.label} className="grid gap-1 py-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-baseline sm:gap-4">
             <dt className="text-sm text-steel-300">{r.label}</dt>
-            <dd className="font-display text-xl font-bold text-bone [font-stretch:115%]">{r.value}</dd>
+            <dd className="min-w-0 font-display text-lg font-bold text-bone sm:text-right sm:text-xl">{r.value}</dd>
           </div>
         ))}
       </dl>

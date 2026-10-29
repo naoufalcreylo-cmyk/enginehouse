@@ -1040,7 +1040,7 @@
 }
 
 .eh-label + h2 {
-  font-size: clamp(2rem, 1.2rem + 2.8vw, 3.75rem);
+  font-size: clamp(1.6rem, 1rem + 3.2vw, 3.75rem);
   line-height: 1.12;
 }
 
@@ -1062,5 +1062,43 @@
   .marquee-logo:hover img {
     transform: scale(1.12);
     filter: drop-shadow(0 8px 14px rgb(0 0 0 / 0.12));
+  }
+}
+
+/* Mobile : les titres en majuscules ne débordent jamais (césure française) */
+@media (max-width: 40rem) {
+  main :is(h1, h2, h3),
+  main .manifeste-text {
+    overflow-wrap: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+
+  main h2:is(.text-3xl, .text-4xl, .sm\:text-4xl, .sm\:text-5xl) {
+    font-size: 1.75rem;
+  }
+
+  main .manifeste-text {
+    font-size: 1.75rem;
+  }
+}
+
+/* Étiquette centrée de l’accueil : le carré jaune reste collé au texte quand il passe à la ligne */
+.hero-label p {
+  display: block;
+  text-align: center;
+}
+
+.hero-label p > span:first-child {
+  display: inline-block;
+  margin-right: 0.7rem;
+  vertical-align: 0.05em;
+}
+
+/* Mobile : le titre fantôme reste sur une ligne, derrière le titre uniquement */
+@media (max-width: 40rem) {
+  .eh-ghost {
+    white-space: nowrap;
+    width: auto;
   }
 }

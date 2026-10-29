@@ -50,7 +50,7 @@ export default function HomePage() {
       <section data-no-reveal className="hero-home relative overflow-hidden bg-ink text-bone">
         <HeroCarousel slides={heroSlides}>
           <div className="container-eh relative flex min-h-[calc(100svh-4.5rem)] flex-col items-center justify-center pb-10 pt-[calc(4.5rem+3rem)] text-center lg:min-h-[min(48rem,calc(100svh-7.25rem))] lg:pt-[calc(5rem+4rem)]">
-            <div className="hero-rise flex justify-center" style={{ "--d": "0.05s" } as CSSProperties}>
+            <div className="hero-rise hero-label flex justify-center" style={{ "--d": "0.05s" } as CSSProperties}>
               <SectionLabel tone="dark" ghost={false}>Maintenance · Reconditionnement · Composants</SectionLabel>
             </div>
             <h1
@@ -161,7 +161,7 @@ export default function HomePage() {
             <MediaSlot slot="diagnostic" figure="engine" className="aspect-[4/3]" sizes="(min-width: 1024px) 45vw, 100vw" />
           </div>
           <div className="lg:col-span-6">
-            <p className="font-display text-[2rem] font-extrabold uppercase leading-[1.08] sm:text-5xl">
+            <p className="manifeste-text font-display text-[2rem] font-extrabold uppercase leading-[1.08] sm:text-5xl">
               Sur un chantier, chaque heure d’immobilisation coûte cher.
             </p>
             <span aria-hidden="true" className="mt-6 block h-1 w-16 bg-signal" />
@@ -204,14 +204,14 @@ export default function HomePage() {
               <Link
                 key={s.slug}
                 href={`/nos-metiers/${s.slug}`}
-                className="on-light card-eh group grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-4 sm:gap-5 bg-white p-6 transition-colors hover:bg-paper sm:p-8 lg:col-span-6"
+                className="on-light card-eh group grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-5 gap-y-3 bg-white p-6 transition-colors hover:bg-paper sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:p-8 lg:col-span-6"
               >
                 <span className="pt-1.5 font-mono text-xs tracking-[0.16em] text-steel-600">{s.code}</span>
-                <span>
-                  <span className="block font-display text-2xl font-extrabold leading-tight">{s.title}</span>
+                <span className="col-span-2 row-start-2 min-w-0 sm:col-span-1 sm:col-start-2 sm:row-start-1">
+                  <span className="block break-words font-display text-xl font-extrabold leading-tight sm:text-2xl">{s.title}</span>
                   <span className="mt-2 block text-[0.98rem] text-steel-700">{s.summary}</span>
                 </span>
-                <span className="mt-1 flex size-10 items-center justify-center border-2 border-ink transition-colors group-hover:border-signal group-hover:bg-signal">
+                <span className="col-start-2 row-start-1 flex size-10 shrink-0 items-center justify-center border-2 border-ink transition-colors group-hover:border-signal group-hover:bg-signal sm:col-start-3 sm:mt-1">
                   <ArrowRight />
                 </span>
               </Link>
